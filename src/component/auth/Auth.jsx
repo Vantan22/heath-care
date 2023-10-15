@@ -2,10 +2,6 @@ import {Navigate, Outlet} from "react-router-dom";
 // import "./auth.scss"
 import {Box, Container} from "@mui/material";
 const Auth = () => {
-  const  username  = localStorage.getItem("username");
-  if (username) {
-    return <Navigate to="/" />;
-  }
   return (
     <Container style={
     {
