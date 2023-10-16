@@ -1,8 +1,38 @@
-# React + Vite
+# React JS + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Health Care using React + Vite
 
-Currently, two official plugins are available:
+## RUN NODE
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Github template
+
+### install node modules
+
+```bash
+npm i  || npm install If you don't have pnpm installed, run: npm install -g pnpm
+```
+
+## Usage
+
+### Development
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+### lint
+
+```bash
+npm run lint
+```
+### preview
+
+```bash
+npm run preview
+```
+
