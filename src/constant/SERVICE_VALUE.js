@@ -16,12 +16,12 @@ const SERVICE_VALUE = [
   {
     src :DS_BAC_SI,
     content : 'DANH SÁCH BÁC SĨ',
-    href : '/specialist'
+    href : '/create-medical-records'
   },
   {
     src :HEALING,
     content : 'HEALING',
-    href : '/specialist'
+    href : '/create-medical-records'
   }
 ]
 export default SERVICE_VALUE
