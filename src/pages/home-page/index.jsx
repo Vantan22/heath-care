@@ -2,6 +2,7 @@ import CarouselMUI from "./component/carousel/CarouselMUI.jsx";
 import Service from "./component/Service/Service.jsx";
 import About from "./component/about/About.jsx";
 import Header from "../../component/header/Header.jsx";
+import Footer from "../../component/footer/Footer.jsx";
 
 const HomePage = () => {
 
@@ -16,6 +17,7 @@ const HomePage = () => {
         <Service/>
         <About/>
       </div>
+    <Footer />
     </main>);
 }
 export default HomePage

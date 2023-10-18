@@ -29,7 +29,7 @@ const Header = () => {
             }} src={logo} alt="logo"/>
             <Typography sx={{
               color: "#EBE4D1", fontSize: "25px", fontWeight: "600",
-            }}>Supper Hotel</Typography>
+            }}>Health Care</Typography>
           </Box>
           <Box>{MENU_NAVIGATE.map((menu, index) => {
             return <Link sx={{

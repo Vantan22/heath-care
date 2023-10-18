@@ -24,12 +24,12 @@ const About = () => {
               fontWeight: "700",
               lineHeight: "34px",
               paddingBottom: "30px",
-            }}>SUPPER HOTEL HÀ NỘI</Typography>
+            }}>HEALTH CARE HÀ NỘI</Typography>
             <Typography sx={{
               color: "#333333",
               fontSize: "18px",
               lineHeight: "28px",
-            }}>Nằm giữa trung tâm Thủ đô Hà Nội, SUPPER HOTEL HÀ NỘI chính thức đi vào hoạt động từ tháng 11/2010. Sau
+            }}>Nằm giữa trung tâm Thủ đô Hà Nội, HEALTH CARE HÀ NỘI chính thức đi vào hoạt động từ tháng 11/2010. Sau
               hơn 1 thập kỷ hình thành và phát triển, Bệnh viện được đánh giá là một trong những địa chỉ khám, chữa bệnh
               uy tín, có chất lượng dịch vụ cao. <br/>
               Mỗi ngày Bệnh viện tiếp nhận hàng trăm lượt bệnh nhân trên cả nước đến thăm khám và điều trị. 100% khách
