@@ -27,6 +27,7 @@ import {
     GridToolbarContainer,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
+import Footer from "../../../component/Footer/Footer.jsx";
 
 const CreateMedicalRecords = () => {
     const checkLogin = localStorage.getItem('id')
@@ -475,6 +476,10 @@ const CreateMedicalRecords = () => {
                 </Box>
             </form>
         </Container>
+        <Box sx={{
+            height: "40px",
+        }}></Box>
+        <Footer/>
     </Box>)
 }
 export default CreateMedicalRecords

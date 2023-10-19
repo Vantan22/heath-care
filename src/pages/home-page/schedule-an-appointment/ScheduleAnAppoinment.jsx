@@ -22,6 +22,7 @@ import {DemoContainer} from "@mui/x-date-pickers/internals/demo/index.js";
 import {useEffect, useState} from "react";
 import {Radio} from "antd";
 import axios from "axios";
+import Footer from "../../../component/footer/Footer.jsx";
 
 const ScheduleAnAppoinment = () => {
     const checkLogin = localStorage.getItem('id')
@@ -254,6 +255,18 @@ const ScheduleAnAppoinment = () => {
                                     <Radio value="female">Female</Radio>
                                 </Radio.Group>
                             </Box>
+                            <Box sx={{width: "45%"}}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DemoContainer components={['DateTimePicker']}>
+                                        <DateTimePicker label="Choose your examination time" onChange={onChange}/>
+                                    </DemoContainer>
+                                </LocalizationProvider>
+                            </Box>
+                        </Box>
+                        <Box sx={{
+                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
+                        }}>
+
                             <FormControl sx={{width: "45%"}}>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
@@ -268,17 +281,6 @@ const ScheduleAnAppoinment = () => {
                                                                           value={value.id}>{value.specName}</MenuItem>)}
                                 </Select>
                             </FormControl>
-                        </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
-                        }}>
-                            <Box sx={{width: "45%"}}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker label="Choose your examination time" onChange={onChange}/>
-                                    </DemoContainer>
-                                </LocalizationProvider>
-                            </Box>
                             <FormControl sx={{width: "45%"}}>
                                 <InputLabel id="demo-simple-select-label">Specialized doctor</InputLabel>
                                 <Select
@@ -337,6 +339,10 @@ const ScheduleAnAppoinment = () => {
                 </Box>
             </form>
         </Container>
+        <Box sx={{
+            height: "40px",
+        }}></Box>
+            <Footer/>
     </Box>)
 }
 export default ScheduleAnAppoinment
