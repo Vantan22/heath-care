@@ -60,9 +60,15 @@ const ScheduleAnAppoinment = () => {
     const onChange = (value) => {
         const convertTime = value.toISOString().replace("Z", "").slice(0, 23).replace(".000", "")
         setExaminationTime(convertTime)
+
+    };
+    const handleChange = () => {
+    };
+    const handleChangeDepartment = (event) => {
+        // setDepartmentId(event.target.value);
         axios.post("https://truculent-kick-production.up.railway.app/api/doctor/getDoctorsByCategory", {
-            categoryId: departmentId,
-            appointmentTime: convertTime
+            categoryId: event.target.value,
+            appointmentTime: examinationTime
         })
             .then((response) => {
                 setSpecialization(response.data.freeDoctors)
@@ -70,11 +76,6 @@ const ScheduleAnAppoinment = () => {
             .catch((error) => {
                 console.log(error)
             });
-    };
-    const handleChange = () => {
-    };
-    const handleChangeDepartment = (event) => {
-        setDepartmentId(event.target.value);
     }
     const handleChangeGender = (event) => {
         setValue(event.target.value);
