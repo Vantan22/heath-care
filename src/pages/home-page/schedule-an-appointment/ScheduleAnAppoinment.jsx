@@ -33,7 +33,6 @@ const ScheduleAnAppoinment = () => {
     const [specialization, setSpecialization] = useState([]);
     const [examinationTime, setExaminationTime] = useState('');
     const [departments, setDepartments] = useState([]);
-    const [departmentId, setDepartmentId] = useState(1);
     const patientId = localStorage.getItem('id')
 
     useEffect(() => {

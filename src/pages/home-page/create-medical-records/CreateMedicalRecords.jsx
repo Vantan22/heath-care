@@ -44,6 +44,7 @@ const CreateMedicalRecords = () => {
         axios
             .get("https://truculent-kick-production.up.railway.app/api/doctor/getDoctorByUserId/userId/10")
             .then((response) => {
+                console.log('getDoctorByUserId:',response)
             })
             .catch((error) => console.error(error));
     }, []);
