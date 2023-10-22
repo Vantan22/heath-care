@@ -20,11 +20,14 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo/index.js";
 import {useEffect, useState} from "react";
-import {Radio} from "antd";
+import {message, Radio} from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
+import {useNavigate} from "react-router-dom";
 
 const ScheduleAnAppoinment = () => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate();
     const checkLogin = localStorage.getItem('id')
     if (!checkLogin) {
         window.location.href = "/auth/login"
@@ -41,6 +44,7 @@ const ScheduleAnAppoinment = () => {
             .get("https://truculent-kick-production.up.railway.app/api/specialization/getAll")
             .then((response) => {
                 setDepartments(response.data);
+                console.log('response.data',response.data)
             })
             .catch((error) => console.error(error));
     }, []);
@@ -53,6 +57,16 @@ const ScheduleAnAppoinment = () => {
             "appointmentTime": examinationTime,
             "purpose": data.purpose
 
+        }).then((response) => {
+            if (response.status === 200) {
+                messageApi.open({
+                    type: 'success', content: 'Resister in successfully!', duration: 1.5, onClose: () => {
+                        navigate("/");
+                    }
+                });
+            } else {
+                console.log("Error posting data!")
+            }
         })
     };
 
@@ -338,6 +352,7 @@ const ScheduleAnAppoinment = () => {
 
                 </Box>
             </form>
+            {contextHolder}
         </Container>
         <Box sx={{
             height: "40px",

@@ -12,7 +12,8 @@ export default function Footer() {
             component="footer"
             sx={{
                 backgroundColor: "#fa965c",
-                marginTop: '30px'
+                marginTop: '30px',
+                height:"fit-height",
             }}
         >
             <Container maxWidth="lg">
