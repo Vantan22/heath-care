@@ -1,4 +1,4 @@
-import {Box, Container, Link, MenuItem, Typography} from "@mui/material";
+import {Avatar, Box, Container, Link, MenuItem, Stack, Typography} from "@mui/material";
 import logo from "../../assets/images/logo.png";
 import {MENU_NAVIGATE} from "../../constant/MENU_NAVIGATE.js";
 import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate()
+    const currentName = localStorage.getItem('fullName')
 
   const handleLogout = () => {
     localStorage.removeItem('username')
@@ -45,20 +46,37 @@ const Header = () => {
               }
             }} href={menu.path} key={index}>{menu.name}</Link>
           })}</Box>
-          <Box>
-            <PopupState variant="popover" popupId="demo-popup-menu">
-              {(popupState) => (<>
-                  <Typography sx={{
-                    color: "#EBE4D1",
-                  }} variant="contained" {...bindTrigger(popupState)}>
-                    USER NAME
-                  </Typography>
-                  <Menu {...bindMenu(popupState)}>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
-                </>)}
-            </PopupState>
-          </Box>
+            {currentName ? <Box sx={{
+                minWidth: "70px",
+            }}>
+                <PopupState variant="popover" popupId="demo-popup-menu">
+                    {(popupState) => (<>
+                        <Typography sx={{
+                            color: "#EBE4D1",
+                            cursor: "pointer",
+                        }} variant="contained" {...bindTrigger(popupState)}>
+                            <Stack direction="row" spacing={2} alignItems="center">
+                                <Avatar alt="Remy Sharp" sizes="20" src="/static/images/avatar/1.jpg" />
+                                <Typography sx={{
+                                    fontSize: "18px",
+                                    fontWeight: "500",
+                                }}>{currentName}</Typography>
+                            </Stack>
+                        </Typography>
+                        <Menu {...bindMenu(popupState)} >
+                            <MenuItem sx={{
+                                width: "100px",
+                            }}>Profile</MenuItem>
+                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        </Menu>
+                    </>)}
+                </PopupState>
+            </Box> : <Link href="/auth/login" sx={{
+                fontSize: "18px",
+                fontWeight: "500",
+                color:"#fff",
+                cursor: "pointer",
+            }}>Login</Link>}
         </Box>
       </Container>
     </header>)
