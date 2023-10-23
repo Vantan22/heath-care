@@ -12,7 +12,8 @@ const HomePage = () => {
       <Header/>
       <div style={{
         flex: '1 1 0%',
-      }}>
+    }}>
+      
         <CarouselMUI/>
         <Service/>
         <About/>
