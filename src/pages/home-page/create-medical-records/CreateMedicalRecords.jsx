@@ -101,7 +101,7 @@ const CreateMedicalRecords = () => {
   const handleCloseFindEmail = () => {
     setOpenFindEmail(false);
   }
-  const handleGetEmail = (value) => {
+  const handleGetEmail = () => {
     axios
       .get(`https://truculent-kick-production.up.railway.app/api/patients/email?email=${email}`)
       .then((response) => {
