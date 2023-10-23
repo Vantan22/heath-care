@@ -4,8 +4,8 @@ export const MENU_NAVIGATE = [
     name: 'Trang chủ',
   },
   {
-    path: '/specialist',
-    name: 'Chuyên khoa',
+    path: '/appointment-list',
+    name: 'Lịch Hẹn',
   },
   {
     path: '/schedule-an-appointment',

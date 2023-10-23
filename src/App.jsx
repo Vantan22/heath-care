@@ -8,6 +8,7 @@ import ScheduleAnAppoinment from "./pages/home-page/schedule-an-appointment/Sche
 import CreateMedicalRecords from "./pages/home-page/create-medical-records/CreateMedicalRecords.jsx";
 import ContactForm from "./pages/contact/Contact.jsx";
 import About from "./pages/about/About.jsx";
+import AppointmentList from "./pages/appointment-list/AppointmentList.jsx";
 
 function App() {
     return (<Routes>
@@ -22,6 +23,7 @@ function App() {
         <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
         <Route path="/contact" element={<ContactForm/>}/>
         <Route path="/about" element={<About />}/>
+      <Route path="/appointment-list" element={<AppointmentList />}/>
     </Routes>)
 }
 export default App
