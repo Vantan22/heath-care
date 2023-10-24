@@ -37,7 +37,7 @@ export default function Profile() {
                 console.log("usser:", response);
             })
             .catch((error) => console.error(error));
-    }, []);
+    }, [settings]);
 
     const handleChangeAvatar = (e) => {
         const avatar = e.target.files[0];
@@ -64,7 +64,7 @@ export default function Profile() {
         });
         axios
             .post(
-                `https://truculent-kick-production.up.railway.api/patients/updatePatient/${patientId}`,
+                `https://truculent-kick-production.up.railway.app/api/patients/updatePatient/${patientId}`,
                 {
                     image: selectAvatar,
                     id: patientId,
@@ -82,11 +82,12 @@ export default function Profile() {
                 if (response.status === 200) {
                     messageApi.open({
                         type: "success",
-                        content: "Resister in successfully!",
+                        content: "Chỉnh sửa thành công!",
                         duration: 1.5,
                         onClose: () => {
-                            navigate("/");
-                            setSettings(false);
+
+                            setSettings(!settings);
+                            console.log('aaaa', settings);
                         },
                     });
                 } else {
@@ -296,7 +297,7 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         marginBottom: "0px",
                                                         borderBottom: "1px solid #cccc",
                                                     }}
@@ -341,7 +342,7 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         borderBottom: "1px solid #cccc",
                                                         marginBottom: "0px",
                                                     }}
@@ -377,7 +378,6 @@ export default function Profile() {
                                                     {...register("email")}
                                                     name="email"
                                                     defaultValue={dataUser.email}
-                                                //   onChange={handleChangeEmail}
                                                 />
                                                 <FormHelperText
                                                     sx={{ color: "red", height: "20px" }}
@@ -396,7 +396,7 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         borderBottom: "1px solid #cccc",
                                                         marginBottom: "0px",
                                                     }}
@@ -444,7 +444,7 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         borderBottom: "1px solid #cccc",
                                                         marginBottom: "0px",
                                                     }}
@@ -490,7 +490,7 @@ export default function Profile() {
                                                     padding: "14px",
                                                     color: "#00000",
                                                     fontWeight: "400",
-                                                    fontSize: "20px",
+                                                    fontSize: "16px",
                                                     borderBottom: "1px solid #cccc",
                                                     marginBottom: "0px",
                                                 }}
@@ -525,7 +525,7 @@ export default function Profile() {
                                                     padding: "14px",
                                                     color: "#00000",
                                                     fontWeight: "400",
-                                                    fontSize: "20px",
+                                                    fontSize: "16px",
                                                     borderBottom: "1px solid #cccc",
                                                     marginBottom: "0px",
                                                 }}
@@ -589,7 +589,7 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         borderBottom: "1px solid #cccc",
                                                         marginBottom: "0px",
                                                     }}
@@ -636,13 +636,13 @@ export default function Profile() {
                                                         padding: "14px",
                                                         color: "#00000",
                                                         fontWeight: "400",
-                                                        fontSize: "20px",
+                                                        fontSize: "16px",
                                                         borderBottom: "1px solid #cccc",
                                                         marginBottom: "0px",
                                                     }}
                                                 >
-                                                    {dataUser.weight
-                                                        ? dataUser.weight
+                                                    {dataUser.address
+                                                        ? dataUser.address
                                                         : "Chua cap nhat dia chi"}
                                                 </Typography>
                                             </Box>
@@ -672,7 +672,7 @@ export default function Profile() {
                                             Hủy{" "}
                                         </Button>
                                     ) : <Button
-                                            onClick={()=>setSettings(!settings)}
+                                        onClick={() => setSettings(!settings)}
                                         sx={{
                                             padding: "14px",
                                             margin: "10px 20px 20px 20px",
