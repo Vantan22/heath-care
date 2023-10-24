@@ -3,6 +3,11 @@ import axios from 'axios';
 const HTTP = axios.create({
   baseURL: 'https://truculent-kick-production.up.railway.app', // Thay thế bằng URL của API thực tế của bạn
   timeout: 10000, // Thời gian tối đa cho mỗi yêu cầu (10 giây trong trường hợp này)
+  headers: {
+    'Authorization': 'Bearer your-access-token', // Tiêu đề Authorization
+    'Content-Type': 'application/json', // Tiêu đề Content-Type
+    // Thêm tiêu đề khác nếu cần
+  },
 });
 
 // Thêm các header mặc định (ví dụ: Authorization header)

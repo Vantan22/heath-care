@@ -20,38 +20,83 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
-import axios from "axios";
+import axios, { Axios } from "axios";
+import handleImage from "../../../axios-config-handle-image";
 export default function Profile() {
     const [messageApi, contextHolder] = message.useMessage();
     const [selectAvatar, setSelectAvatar] = useState(null);
+    const [avatarBase, setAvatarBase] = useState("");
     const [settings, setSettings] = useState(false);
-    const [dataUser, setDataUser] = useState("");
+    const [dataUser, setDataUser] = useState({});// ??? dât obj nhưng dể def
     const patientId = localStorage.getItem("id");
-
+    const [avatar, setImageURL] = useState(dataUser.image);
+    const [valueGender, setValueGender] = useState(dataUser.gender);
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
         axios
             .get(`https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`)
             .then((response) => {
+                console.log("getData:", response);
                 setDataUser(response.data);
-                console.log("usser:", response);
             })
             .catch((error) => console.error(error));
-    }, [settings]);
+    }, [])
 
-    const handleChangeAvatar = (e) => {
+    const handleChangeAvatar = async (e) => {
         const avatar = e.target.files[0];
         setSelectAvatar(avatar);
-    };
+        if (avatar) {
+            const formData = new FormData();
+            formData.append('image', avatar);
+            console.log('avatar', avatar);
+            try {
+                const response = await axios.post('http://api.imgur.com/3/image', formData, {
+                    headers: {
+                        Authorization: 'Client-ID 83dc8c472881fb0',
+                    },
+                });
+                console.log("response:", response);
+                const imageUrl = response.data.data.link;
+                setAvatarBase(imageUrl);
+            } catch (error) {
+                console.error('Error uploading image to Imgur:', error);
+            }
+        }
 
+    }
     const handleCancelBtn = (e) => {
         setSettings(!settings);
         setSelectAvatar(null);
         reset();
     };
+    const handleChangeGender = (event) => {
+        setValueGender(event.target.value);
+    }
+
+    // Hàm tải hình ảnh lên Imgur
+    // const handleImageChange = async () => {
+    //     const formData = new FormData();
+    //     formData.append('image', selectAvatar);
+
+    //     // Thay 'YOUR_CLIENT_ID' bằng Client ID của bạn từ Imgur
+    //     try {
+    //         const response = await axios.post('https://api.imgur.com/3/image', formData, {
+    //             headers: {
+    //                 Authorization: 'Client-ID 83dc8c472881fb0',
+    //             },
+    //         });
+
+    //         const imageUrl = response.data.data.link;
+    //         console.log('Link to uploaded image:', imageUrl);
+    //         setImgUrl(imageUrl);
+    //     } catch (error) {
+    //         console.error('Error uploading image to Imgur:', error);
+    //     }
+    // };
+
     const onSubmit = (data) => {
-        console.log("nahuy2", {
-            image: selectAvatar,
+        console.log("submitData", {
+            image: avatarBase,
             id: patientId,
             fullName: data.fullName,
             email: data.email,
@@ -59,14 +104,17 @@ export default function Profile() {
             phoneNumber: data.phoneNumber,
             weight: data.weight,
             height: data.height,
-            gender: data.gender,
+            gender: valueGender,
             address: data.address,
+            setTing: settings,
+            dateOfBirth: data.dateOfBirth,
+            avatarChage: data.avatar
         });
         axios
             .post(
                 `https://truculent-kick-production.up.railway.app/api/patients/updatePatient/${patientId}`,
                 {
-                    image: selectAvatar,
+                    image: avatarBase,
                     id: patientId,
                     fullName: data.fullName,
                     email: data.email,
@@ -74,20 +122,22 @@ export default function Profile() {
                     phoneNumber: data.phoneNumber,
                     weight: data.weight,
                     height: data.height,
-                    gender: data.gender,
+                    gender: valueGender,
                     address: data.address,
+                    dateOfBirth: data.dateOfBirth,
                 }
             )
             .then((response) => {
                 if (response.status === 200) {
+                    setDataUser(response.data);
                     messageApi.open({
                         type: "success",
                         content: "Chỉnh sửa thành công!",
                         duration: 1.5,
                         onClose: () => {
-
-                            setSettings(!settings);
-                            console.log('aaaa', settings);
+                            reset();
+                            setSettings(false);
+                            console.log("settings", settings);
                         },
                     });
                 } else {
@@ -124,11 +174,6 @@ export default function Profile() {
                     "Phone number without accents"
                 )
                 .trim(),
-            address: yup.string(),
-            // .required("Please enter a adress")
-            // .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "Address without accents")
-            // .min(3, "Enter than 2 characters")
-            // .trim(),
         })
         .required();
     const {
@@ -226,6 +271,8 @@ export default function Profile() {
                                                             : dataUser.image
                                                     }
                                                     htmlFor="input-avatar"
+                                                    {...register("avatar")}
+                                                    name="avatar"
                                                 />
                                             ) : (
                                                 <Avatar
@@ -546,42 +593,35 @@ export default function Profile() {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            columnGap: "20px",
-                                            alignItems: "center",
-                                            width: "45%",
-                                        }}
+                                    <FormControl
+                                        error={!!errors.dateOfBirth}
+                                        sx={{ position: "relative", width: "45%" }}
                                     >
                                         {settings ? (
                                             <>
-                                                <Box>Gender :</Box>
-                                                <Radio.Group
-                                                //   defaultValue={dataUser.gender}
-                                                //   name="gender"
+                                                <InputLabel htmlFor="input-dateOfBirth">DateOfBirth</InputLabel>
+                                                <OutlinedInput
+
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-dateOfBirth"
+                                                    label="Required"
+                                                    type="date"
+                                                    {...register("dateOfBirth")}
+                                                    name="dateOfBirth"
+                                                    defaultValue={dataUser.dateOfBirth}
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
                                                 >
-                                                    <Radio
-                                                        // checked={dataUser.gender === "male"}
-                                                        value="male"
-                                                        name="gender"
-                                                        {...register("gender")}
-                                                    >
-                                                        Male
-                                                    </Radio>
-                                                    <Radio
-                                                        // checked={dataUser.gender === "female"}
-                                                        value="female"
-                                                        name="gender"
-                                                        {...register("gender")}
-                                                    >
-                                                        Female
-                                                    </Radio>
-                                                </Radio.Group>
+                                                    {errors.dateOfBirth && errors.dateOfBirth.message}
+                                                </FormHelperText>
                                             </>
                                         ) : (
-                                            <Box sx={{ width: "100%" }}>
-                                                <Typography>Gender</Typography>
+                                            <Box sx={{ marginBottom: "14px" }}>
+                                                <Typography>Date of Birth</Typography>
                                                 <Typography
                                                     sx={{
                                                         display: "flex",
@@ -594,13 +634,13 @@ export default function Profile() {
                                                         marginBottom: "0px",
                                                     }}
                                                 >
-                                                    {dataUser.gender
-                                                        ? dataUser.gender
-                                                        : "Chua cap nhat gioi tinh"}
+                                                    {dataUser.dateOfBirth
+                                                        ? dataUser.dateOfBirth
+                                                        : "Chua cap nhat ngay sinh"}
                                                 </Typography>
                                             </Box>
                                         )}
-                                    </Box>
+                                    </FormControl>
                                     <FormControl
                                         error={!!errors.addess}
                                         sx={{ position: "relative", width: "45%" }}
@@ -653,6 +693,70 @@ export default function Profile() {
                                 <Box
                                     sx={{
                                         width: "100%",
+                                        padding: "10px 20px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            columnGap: "20px",
+                                            alignItems: "center",
+                                            width: "45%",
+                                        }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <Box>Gender :</Box>
+                                                <Radio.Group
+                                                    onChange={handleChangeGender}
+                                                    value={valueGender}
+                                                    defaultValue={dataUser.gender}
+                                                    name="gender"
+                                                >
+                                                    <Radio
+                                                        value="male"
+                                                        name="gender"
+                                                    >
+                                                        Male
+                                                    </Radio>
+                                                    <Radio
+                                                        value="female"
+                                                        name="gender"
+                                                    >
+                                                        Female
+                                                    </Radio>
+                                                </Radio.Group>
+                                            </>
+                                        ) : (
+                                            <Box sx={{ width: "100%" }}>
+                                                <Typography>Gender</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "16px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.gender
+                                                        ? dataUser.gender
+                                                        : "Chua cap nhat gioi tinh"}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        width: "100%",
                                         display: "flex",
                                         justifyContent: "flex-end",
                                     }}
@@ -684,7 +788,7 @@ export default function Profile() {
                                     >
                                         Chỉnh sửa{" "}
                                     </Button>}
-                                    {settings ? (
+                                    {settings && (
                                         <Button
                                             type="submit"
                                             sx={{
@@ -699,7 +803,7 @@ export default function Profile() {
                                         >
                                             Cập nhật{" "}
                                         </Button>
-                                    ) : ""}
+                                    )}
                                 </Box>
                             </Box>
                         </Box>
