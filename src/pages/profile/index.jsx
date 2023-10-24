@@ -10,7 +10,7 @@ import axios from "axios";
 export default function Profile() {
     const [messageApi, contextHolder] = message.useMessage();
     const [selectAvatar, setSelectAvatar] = useState(null);
-    const fileInput = React.createRef();
+    const [settings, setSettings] = useState(false);
     const user = {
         id: "1",
         age: "20",
@@ -201,26 +201,28 @@ export default function Profile() {
                                 <Box sx={{
                                     width: "100%",
                                     marginBottom: "20px",
+                                    display: "flex",
                                 }}>
-                                    <FormControl sx={{ position: "relative", width: "100%" }}>
-                                        
-                                        <label htmlFor="input-avatar" style={{width:"120px",height:"120px",borderRadius:"50%",marginLeft:"20px"}}>
+                                    <FormControl sx={{ position: "relative" }}>
 
-                                            <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120, cursor: "pointer" }} alt="Remy Sharp" src={selectAvatar ? URL.createObjectURL(selectAvatar) : user.image} htmlFor="input-avatar" />
+                                        <label htmlFor="input-avatar" style={{ width: "120px", height: "120px", borderRadius: "50%", marginLeft: "20px" }}>
+                                            {settings ? <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120, cursor: "pointer" }} alt="Remy Sharp" src={selectAvatar ? URL.createObjectURL(selectAvatar) : user.image} htmlFor="input-avatar" /> : <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120 }} alt="Remy Sharp" src={user.image} htmlFor="input-avatar" />}
+                                            {/* <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120, cursor: "pointer" }} alt="Remy Sharp" src={selectAvatar ? URL.createObjectURL(selectAvatar) : user.image} htmlFor="input-avatar" /> */}
                                         </label>
-                                        <Input
+                                        {settings ? <Input
                                             onChange={handleChangeAvatar}
                                             sx={{ display: "none" }}
                                             id="input-avatar" type="file"
-                                        />
+                                        /> : ""}
                                     </FormControl>
+                                    <Button onClick={() => setSettings(true)}>Thay đổi</Button>
                                 </Box>
                                 <Box sx={{
                                     width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
                                 }}>
                                     <FormControl error={!!errors.fullName} sx={{ position: "relative", width: "45%" }}>
                                         <InputLabel htmlFor="input-fullName">FullName</InputLabel>
-                                        <OutlinedInput
+                                        {settings ? <OutlinedInput
                                             sx={{
                                                 paddingRight: "32px",
                                             }}
@@ -231,7 +233,16 @@ export default function Profile() {
                                             name="fullName"
                                             onChange={handleChangeFullName}
                                             value={dataUser.fullName}
-                                        />
+                                        /> : <Typography sx={{
+                                            display: "flex",
+                                            height: "60px",
+                                            padding: "20px",
+                                            color: "#00000",
+                                            fontWeight: "400",
+                                            fontSize: "20px",
+                                            marginBottom: "0px",
+                                        }}>{dataUser.fullName}</Typography>}
+                                        
                                         <FormHelperText sx={{ color: "red", height: "20px" }}
                                             id="component-error-text">{errors.fullName && errors.fullName.message}</FormHelperText>
                                     </FormControl>
