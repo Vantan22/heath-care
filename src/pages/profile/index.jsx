@@ -1,4 +1,18 @@
-import { Box, Container, FormControl, FormHelperText, InputLabel, OutlinedInput, TextField, Typography, InputAdornment, Select, Button, Avatar, Input } from "@mui/material";
+import {
+    Box,
+    Container,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    OutlinedInput,
+    TextField,
+    Typography,
+    InputAdornment,
+    Select,
+    Button,
+    Avatar,
+    Input,
+} from "@mui/material";
 import { message, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import * as yup from "yup";
@@ -11,29 +25,16 @@ export default function Profile() {
     const [messageApi, contextHolder] = message.useMessage();
     const [selectAvatar, setSelectAvatar] = useState(null);
     const [settings, setSettings] = useState(false);
-    const user = {
-        id: "1",
-        age: "20",
-        image: "/static/images/avatar/1.jpg",
-        fullName: "Benh Van Nhan",
-        gender: "female",
-        email: "d3N3b@example.com",
-        height: "180",
-        weight: "70",
-        addess: "Ha Noi",
-        phoneNumber: "0964167222",
-        addess: "Ha Noi",
-        dateOfBirth: "2000-01-01",
-        createdAt: "2022-01-01",
-    }
-    const [dataUser, setDataUser] = useState(user);
+    const [dataUser, setDataUser] = useState("");
+    const patientId = localStorage.getItem("id");
+
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
         axios
-            .get("")
+            .get(`https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`)
             .then((response) => {
-                setDepartments(response.data);
-                console.log('response.data', response.data)
+                setDataUser(response.data);
+                console.log("usser:", response);
             })
             .catch((error) => console.error(error));
     }, []);
@@ -41,100 +42,73 @@ export default function Profile() {
     const handleChangeAvatar = (e) => {
         const avatar = e.target.files[0];
         setSelectAvatar(avatar);
-        setDataUser({
-            ...dataUser,
-            image: avatar,
-        })
-    }
-
-    const handleChangeFullName = (e) => {
-        setDataUser({
-            ...dataUser,
-            fullName: e.target.value,
-        })
-    }
-    const handleChangeAge = (e) => {
-        setDataUser({
-            ...dataUser,
-            age: e.target.value,
-        })
-    }
-
-    const handleChangeEmail = (e) => {
-        setDataUser({
-            ...dataUser,
-            email: e.target.value,
-        })
-    }
-
-    const handleChangePhoneNumber = (e) => {
-        setDataUser({
-            ...dataUser,
-            phoneNumber: e.target.value,
-        })
-    }
-
-    const handleChangeWeight = (e) => {
-        setDataUser({
-            ...dataUser,
-            weight: e.target.value,
-        })
-    }
-    const handleChangeHeight = (e) => {
-        setDataUser({
-            ...dataUser,
-            height: e.target.value,
-        })
-    }
-    const handleChangeGender = (e) => {
-        setDataUser({
-            ...dataUser,
-            gender: e.target.value,
-        })
-    }
-
-    const handleChangeAddress = (e) => {
-        setDataUser({
-            ...dataUser,
-            addess: e.target.value,
-        })
-    }
-
-    const onSubmit = (data) => {
-        console.log("nqhuy20", dataUser);
-        // axios.post("https://truculent-kick-production.up.railway.app/api/appointment/create", {
-        //     "doctorId": data.doctorId,
-        //     "patientId": patientId,
-        //     "phoneNumber": data.phoneNumber,
-        //     "appointmentTime": examinationTime,
-        //     "purpose": data.purpose
-
-        // }).then((response) => {
-        //     if (response.status === 200) {
-        //         messageApi.open({
-        //             type: 'success', content: 'Resister in successfully!', duration: 1.5, onClose: () => {
-        //                 navigate("/");
-        //             }
-        //         });
-        //     } else {
-        //         console.log("Error posting data!")
-        //     }
-        // })
     };
 
+    const handleCancelBtn = (e) => {
+        setSettings(!settings);
+        setSelectAvatar(null);
+        reset();
+    };
+    const onSubmit = (data) => {
+        console.log("nahuy2", {
+            image: selectAvatar,
+            id: patientId,
+            fullName: data.fullName,
+            email: data.email,
+            age: data.age,
+            phoneNumber: data.phoneNumber,
+            weight: data.weight,
+            height: data.height,
+            gender: data.gender,
+            address: data.address,
+        });
+        axios
+            .post(
+                `https://truculent-kick-production.up.railway.api/patients/updatePatient/${patientId}`,
+                {
+                    image: selectAvatar,
+                    id: patientId,
+                    fullName: data.fullName,
+                    email: data.email,
+                    age: data.age,
+                    phoneNumber: data.phoneNumber,
+                    weight: data.weight,
+                    height: data.height,
+                    gender: data.gender,
+                    address: data.address,
+                }
+            )
+            .then((response) => {
+                if (response.status === 200) {
+                    messageApi.open({
+                        type: "success",
+                        content: "Resister in successfully!",
+                        duration: 1.5,
+                        onClose: () => {
+                            navigate("/");
+                            setSettings(false);
+                        },
+                    });
+                } else {
+                    console.log("Error posting data!");
+                }
+            });
+    };
     const schema = yup
         .object({
             fullName: yup
                 .string()
                 .required("Please enter a user name")
-                .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
+                .matches(
+                    /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
+                    "user name without accents"
+                )
                 .min(2, "Enter than 2 characters")
                 .trim(),
             age: yup
                 .string()
                 .required("Please enter a age")
-                .max(3, "Enter than 3 characters")
-                .trim(),
+                .max(3, "Enter than 3 characters").trim(),
             email: yup
                 .string()
                 .required("Please enter a email")
@@ -144,10 +118,12 @@ export default function Profile() {
             phoneNumber: yup
                 .string()
                 .required("Please enter a phone number")
-                .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, "Phone number without accents")
+                .matches(
+                    /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+                    "Phone number without accents"
+                )
                 .trim(),
-            address: yup
-                .string()
+            address: yup.string(),
             // .required("Please enter a adress")
             // .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "Address without accents")
             // .min(3, "Enter than 2 characters")
@@ -155,240 +131,586 @@ export default function Profile() {
         })
         .required();
     const {
-        handleSubmit, formState: { errors }, register,
+        handleSubmit,
+        formState: { errors, isDirty },
+        reset,
+        register,
     } = useForm({ mode: "all", resolver: yupResolver(schema) });
-
     return (
-        <Box sx={{ display: "flex", height: "100vh", flexDirection: "column", }}>
+        <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
             <Header />
             <Box sx={{ flex: "1 1 0" }}>
                 <Container>
-                    <Box sx={{
-                        width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center",
-                        marginTop: "40px",
-                    }} >
-                        <Typography sx={{
-                            color: "#26577C", fontSize: "40px", fontWeight: "600",
-                        }}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            marginTop: "40px",
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                color: "#26577C",
+                                fontSize: "40px",
+                                fontWeight: "600",
+                            }}
+                        >
                             THÔNG TIN CÁ NHÂN
                         </Typography>
                     </Box>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            marginTop: "20px",
-                            borderRadius: "10px",
-                            boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 5px",
-                            border: "1px solid #B4B4B3",
-                            width: "100%",
-                            position: "relative",
-                        }}>
-                            <Typography sx={{
+                        <Box
+                            sx={{
                                 display: "flex",
-                                height: "60px",
-                                backgroundColor: "#f88848",
-                                borderTopRightRadius: "10px",
-                                borderTopLeftRadius: "10px",
-                                padding: "20px",
-                                color: "#fff",
-                                fontWeight: "600",
-                                fontSize: "20px",
-                                textTransform: "uppercase",
-                                marginBottom: "40px",
-                            }}>Hồ sơ cá nhân</Typography>
-                            <Box>
-                                <Box sx={{
-                                    width: "100%",
+                                flexDirection: "column",
+                                marginTop: "20px",
+                                borderRadius: "10px",
+                                boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 5px",
+                                border: "1px solid #B4B4B3",
+                                width: "100%",
+                                position: "relative",
+                            }}
+                        >
+                            <Typography
+                                sx={{
+                                    display: "flex",
+                                    height: "60px",
+                                    backgroundColor: "#f88848",
+                                    borderTopRightRadius: "10px",
+                                    borderTopLeftRadius: "10px",
+                                    padding: "20px",
+                                    color: "#fff",
+                                    fontWeight: "600",
+                                    fontSize: "20px",
+                                    textTransform: "uppercase",
                                     marginBottom: "20px",
-                                    display: "flex",
-                                }}>
-                                    <FormControl sx={{ position: "relative" }}>
-
-                                        <label htmlFor="input-avatar" style={{ width: "120px", height: "120px", borderRadius: "50%", marginLeft: "20px" }}>
-                                            {settings ? <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120, cursor: "pointer" }} alt="Remy Sharp" src={selectAvatar ? URL.createObjectURL(selectAvatar) : user.image} htmlFor="input-avatar" /> : <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120 }} alt="Remy Sharp" src={user.image} htmlFor="input-avatar" />}
-                                            {/* <Avatar sx={{ display: "flex", alignItems: "center", width: 120, height: 120, cursor: "pointer" }} alt="Remy Sharp" src={selectAvatar ? URL.createObjectURL(selectAvatar) : user.image} htmlFor="input-avatar" /> */}
-                                        </label>
-                                        {settings ? <Input
-                                            onChange={handleChangeAvatar}
-                                            sx={{ display: "none" }}
-                                            id="input-avatar" type="file"
-                                        /> : ""}
-                                    </FormControl>
-                                    <Button onClick={() => setSettings(true)}>Thay đổi</Button>
-                                </Box>
-                                <Box sx={{
-                                    width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
-                                }}>
-                                    <FormControl error={!!errors.fullName} sx={{ position: "relative", width: "45%" }}>
-                                        <InputLabel htmlFor="input-fullName">FullName</InputLabel>
-                                        {settings ? <OutlinedInput
-                                            sx={{
-                                                paddingRight: "32px",
-                                            }}
-                                            id="input-fullName"
-                                            label="Required"
-                                            type="text"
-                                            {...register("fullName")}
-                                            name="fullName"
-                                            onChange={handleChangeFullName}
-                                            value={dataUser.fullName}
-                                        /> : <Typography sx={{
-                                            display: "flex",
-                                            height: "60px",
-                                            padding: "20px",
-                                            color: "#00000",
-                                            fontWeight: "400",
-                                            fontSize: "20px",
-                                            marginBottom: "0px",
-                                        }}>{dataUser.fullName}</Typography>}
-                                        
-                                        <FormHelperText sx={{ color: "red", height: "20px" }}
-                                            id="component-error-text">{errors.fullName && errors.fullName.message}</FormHelperText>
-                                    </FormControl>
-                                    <FormControl error={!!errors.age} sx={{ position: "relative", width: "45%" }}>
-                                        <InputLabel htmlFor="input-phoneNumber">Age</InputLabel>
-                                        <OutlinedInput
-                                            sx={{
-                                                paddingRight: "32px",
-                                            }}
-                                            id="input-age"
-                                            label="age"
-                                            type="text"
-                                            {...register("age")}
-                                            name="age"
-                                            value={dataUser.age}
-                                            onChange={handleChangeAge}
-                                        />
-                                        <FormHelperText sx={{ color: "red", height: "20px" }}
-                                            id="component-error-text">{errors.age && errors.age.message}</FormHelperText>
-                                    </FormControl>
-                                </Box>
-                                <Box sx={{
-                                    width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
-                                }}>
-                                    <FormControl error={!!errors.email} sx={{ position: "relative", width: "45%" }}>
-                                        <InputLabel htmlFor="input-email">Email</InputLabel>
-                                        <OutlinedInput
-                                            sx={{
-                                                paddingRight: "32px",
-                                            }}
-                                            id="input-email"
-                                            label="Required"
-                                            type="email"
-                                            {...register("email")}
-                                            name="email"
-                                            value={dataUser.email}
-                                            onChange={handleChangeEmail}
-                                        />
-                                        <FormHelperText sx={{ color: "red", height: "20px" }}
-                                            id="component-error-text">{errors.email && errors.email.message}</FormHelperText>
-                                    </FormControl>
-                                    <FormControl error={!!errors.phoneNumber} sx={{ position: "relative", width: "45%" }}>
-                                        <InputLabel htmlFor="input-phoneNumber">phoneNumber</InputLabel>
-                                        <OutlinedInput
-                                            sx={{
-                                                paddingRight: "32px",
-                                            }}
-                                            id="input-phoneNumber"
-                                            label="phoneNumber"
-                                            type="text"
-                                            {...register("phoneNumber")}
-                                            name="phoneNumber"
-                                            value={dataUser.phoneNumber}
-                                            onChange={handleChangePhoneNumber}
-                                        />
-                                        <FormHelperText sx={{ color: "red", height: "20px" }}
-                                            id="component-error-text">{errors.phoneNumber && errors.phoneNumber.message}</FormHelperText>
-                                    </FormControl>
-                                </Box>
-                                <Box sx={{
-                                    width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
-                                }}>
-                                    <TextField
-                                        label="Weight"
-                                        id="outlined-start-adornment"
-                                        type="number"
-                                        sx={{ width: '45%' }}
-                                        value={dataUser.weight}
-                                        onChange={handleChangeWeight}
-                                        {...register("weight")}
-                                        InputProps={{
-                                            onChange: handleChangeWeight,
-                                            startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Height"
-                                        id="outlined-start-adornment"
-                                        type="number"
-                                        sx={{ width: '45%' }}
-                                        value={dataUser.height}
-
-                                        {...register("height")}
-                                        InputProps={{
-                                            onChange: handleChangeHeight,
-                                            startAdornment: <InputAdornment position="start">cm</InputAdornment>,
-                                        }}
-                                    />
-                                </Box>
-                                <Box sx={{
-                                    width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between", alignItems: "center",
-                                }}>
-                                    <Box sx={{
+                                }}
+                            >
+                                Hồ sơ cá nhân
+                            </Typography>
+                            <Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        marginBottom: "20px",
                                         display: "flex",
-                                        columnGap: "20px",
-                                        alignItems: "center",
-                                    }}>
-                                        <Box>Gender :</Box>
-                                        <Radio.Group
-                                            value={dataUser.gender}
-                                            onChange={handleChangeGender}
-                                            name="gender">
-                                            <Radio checked={dataUser.gender === "male"} value="male">Male</Radio>
-                                            <Radio checked={dataUser.gender === "female"} value="female">Female</Radio>
-                                        </Radio.Group>
-                                    </Box>
-                                    <FormControl error={!!errors.addess} sx={{ position: "relative", width: "45%" }}>
-                                        <InputLabel htmlFor="input-addess">Addess</InputLabel>
-                                        <OutlinedInput
-                                            sx={{
-                                                paddingRight: "32px",
+                                    }}
+                                >
+                                    <FormControl sx={{ position: "relative" }}>
+                                        <label
+                                            htmlFor="input-avatar"
+                                            style={{
+                                                width: "120px",
+                                                height: "120px",
+                                                borderRadius: "50%",
+                                                marginLeft: "20px",
                                             }}
-                                            id="input-addess"
-                                            label="Required"
-                                            type="text"
-                                            {...register("addess")}
-                                            name="addess"
-                                            onChange={handleChangeAddress}
-                                            value={dataUser.addess}
+                                        >
+                                            {settings ? (
+                                                <Avatar
+                                                    sx={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        width: 120,
+                                                        height: 120,
+                                                        cursor: "pointer",
+                                                    }}
+                                                    alt="Remy Sharp"
+                                                    src={
+                                                        selectAvatar
+                                                            ? URL.createObjectURL(selectAvatar)
+                                                            : dataUser.image
+                                                    }
+                                                    htmlFor="input-avatar"
+                                                />
+                                            ) : (
+                                                <Avatar
+                                                    sx={{
+                                                        display: "flex", alignItems: "center",
+                                                        width: 120,
+                                                        height: 120,
+                                                    }}
+                                                    alt="Remy Sharp"
+                                                    src={dataUser.image}
+                                                    htmlFor="input-avatar"
+                                                />
+                                            )}
+                                        </label>
+                                        {settings ? (
+                                            <Input
+                                                onChange={handleChangeAvatar}
+                                                sx={{ display: "none" }}
+                                                id="input-avatar"
+                                                type="file"
+                                            />
+                                        ) : (
+                                            ""
+                                        )}
+                                    </FormControl>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        padding: "10px 20px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <FormControl
+                                        error={!!errors.fullName}
+                                        sx={{ position: "relative", width: "45%" }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <InputLabel htmlFor="input-fullName">
+                                                    FullName
+                                                </InputLabel>
+                                                <OutlinedInput
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-fullName"
+                                                    label="Required"
+                                                    type="text"
+                                                    defaultValue={dataUser.fullName}
+                                                    {...register("fullName")}
+                                                    name="fullName"
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
+                                                >
+                                                    {errors.fullName && errors.fullName.message}
+                                                </FormHelperText>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography>Full Name</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        marginBottom: "0px",
+                                                        borderBottom: "1px solid #cccc",
+                                                    }}
+                                                >
+                                                    {dataUser.fullName}
+                                                </Typography>
+                                            </>
+                                        )}
+                                    </FormControl>
+                                    <FormControl
+                                        error={!!errors.age}
+                                        sx={{ position: "relative", width: "45%" }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <InputLabel htmlFor="input-age">Age</InputLabel>
+                                                <OutlinedInput
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-age"
+                                                    label="age"
+                                                    type="text"
+                                                    {...register("age")}
+                                                    name="age"
+                                                    defaultValue={dataUser.age}
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
+                                                >
+                                                    {errors.age && errors.age.message}
+                                                </FormHelperText>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography>Age</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.age}
+                                                </Typography>
+                                            </>
+                                        )}
+                                    </FormControl>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        padding: "10px 20px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <FormControl
+                                        error={!!errors.email}
+                                        sx={{ position: "relative", width: "45%" }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <InputLabel htmlFor="input-email">Email</InputLabel>
+                                                <OutlinedInput
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-email"
+                                                    label="Required"
+                                                    type="email"
+                                                    {...register("email")}
+                                                    name="email"
+                                                    defaultValue={dataUser.email}
+                                                //   onChange={handleChangeEmail}
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
+                                                >
+                                                    {errors.email && errors.email.message}
+                                                </FormHelperText>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography>Email</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.email}
+                                                </Typography>
+                                            </>
+                                        )}
+                                    </FormControl>
+                                    <FormControl
+                                        error={!!errors.phoneNumber}
+                                        sx={{ position: "relative", width: "45%" }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <InputLabel htmlFor="input-phoneNumber">
+                                                    Phone Number
+                                                </InputLabel>
+                                                <OutlinedInput
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-phoneNumber"
+                                                    label="phoneNumber"
+                                                    type="text"
+                                                    {...register("phoneNumber")}
+                                                    name="phoneNumber"
+                                                    defaultValue={dataUser.phoneNumber}
+                                                //   onChange={handleChangePhoneNumber}
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
+                                                >
+                                                    {errors.phoneNumber && errors.phoneNumber.message}
+                                                </FormHelperText>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography>Phone Number</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.phoneNumber
+                                                        ? dataUser.phoneNumber
+                                                        : "Chua cap nhat sdt"}
+                                                </Typography>
+                                            </>
+                                        )}
+                                    </FormControl>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        padding: "10px 20px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    {settings ? (
+                                        <TextField
+                                            label="Weight"
+                                            id="outlined-start-adornment"
+                                            type="number"
+                                            sx={{ width: "45%" }}
+                                            defaultValue={dataUser.weight}
+                                            {...register("weight")}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">kg</InputAdornment>
+                                                ),
+                                            }}
                                         />
-                                        <FormHelperText sx={{ color: "red", height: "20px" }}
-                                            id="component-error-text">{errors.address && errors.address.message}</FormHelperText>
+                                    ) : (
+                                        <Box sx={{ width: "45%" }}>
+                                            <Typography>Weight</Typography>
+                                            <Typography
+                                                sx={{
+                                                    width: "100%",
+                                                    display: "flex",
+                                                    height: "46px",
+                                                    padding: "14px",
+                                                    color: "#00000",
+                                                    fontWeight: "400",
+                                                    fontSize: "20px",
+                                                    borderBottom: "1px solid #cccc",
+                                                    marginBottom: "0px",
+                                                }}
+                                            >
+                                                {dataUser.weight
+                                                    ? dataUser.weight
+                                                    : "Chua cap nhat can nang"}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                    {settings ? (
+                                        <TextField
+                                            label="Height"
+                                            id="outlined-start-adornment"
+                                            type="number"
+                                            sx={{ width: "45%" }}
+                                            defaultValue={dataUser.height}
+                                            {...register("height")}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">cm</InputAdornment>
+                                                ),
+                                            }}
+                                        />
+                                    ) : (
+                                        <Box sx={{ width: "45%" }}>
+                                            <Typography>Height</Typography>
+                                            <Typography
+                                                sx={{
+                                                    display: "flex",
+                                                    height: "46px",
+                                                    padding: "14px",
+                                                    color: "#00000",
+                                                    fontWeight: "400",
+                                                    fontSize: "20px",
+                                                    borderBottom: "1px solid #cccc",
+                                                    marginBottom: "0px",
+                                                }}
+                                            >
+                                                {dataUser.height
+                                                    ? dataUser.height
+                                                    : "Chua cap nhat chieu cao"}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        padding: "10px 20px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            columnGap: "20px",
+                                            alignItems: "center",
+                                            width: "45%",
+                                        }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <Box>Gender :</Box>
+                                                <Radio.Group
+                                                //   defaultValue={dataUser.gender}
+                                                //   name="gender"
+                                                >
+                                                    <Radio
+                                                        // checked={dataUser.gender === "male"}
+                                                        value="male"
+                                                        name="gender"
+                                                        {...register("gender")}
+                                                    >
+                                                        Male
+                                                    </Radio>
+                                                    <Radio
+                                                        // checked={dataUser.gender === "female"}
+                                                        value="female"
+                                                        name="gender"
+                                                        {...register("gender")}
+                                                    >
+                                                        Female
+                                                    </Radio>
+                                                </Radio.Group>
+                                            </>
+                                        ) : (
+                                            <Box sx={{ width: "100%" }}>
+                                                <Typography>Gender</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.gender
+                                                        ? dataUser.gender
+                                                        : "Chua cap nhat gioi tinh"}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                    <FormControl
+                                        error={!!errors.addess}
+                                        sx={{ position: "relative", width: "45%" }}
+                                    >
+                                        {settings ? (
+                                            <>
+                                                <InputLabel htmlFor="input-address">Address</InputLabel>
+                                                <OutlinedInput
+                                                    sx={{
+                                                        paddingRight: "32px",
+                                                    }}
+                                                    id="input-address"
+                                                    label="Required"
+                                                    type="text"
+                                                    {...register("address")}
+                                                    name="address"
+                                                    defaultValue={dataUser.address}
+                                                />
+                                                <FormHelperText
+                                                    sx={{ color: "red", height: "20px" }}
+                                                    id="component-error-text"
+                                                >
+                                                    {errors.address && errors.address.message}
+                                                </FormHelperText>
+                                            </>
+                                        ) : (
+                                            <Box sx={{ marginBottom: "14px" }}>
+                                                <Typography>Address</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        display: "flex",
+                                                        height: "46px",
+                                                        padding: "14px",
+                                                        color: "#00000",
+                                                        fontWeight: "400",
+                                                        fontSize: "20px",
+                                                        borderBottom: "1px solid #cccc",
+                                                        marginBottom: "0px",
+                                                    }}
+                                                >
+                                                    {dataUser.weight
+                                                        ? dataUser.weight
+                                                        : "Chua cap nhat dia chi"}
+                                                </Typography>
+                                            </Box>
+                                        )}
                                     </FormControl>
                                 </Box>
 
-                                <Box sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                }}>
-                                    <Button type="submit" sx={{
-                                        padding: "14px",
-                                        margin: "10px 20px 20px 20px",
-                                        width: "300px",
-                                        backgroundColor: "#f8792e",
-                                    }} variant="contained" size="large">Cập nhật </Button>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                    }}
+                                >
+                                    {settings ? (
+                                        <Button
+                                            onClick={handleCancelBtn}
+                                            sx={{
+                                                padding: "14px",
+                                                margin: "10px 20px 20px 20px",
+                                                width: "300px",
+                                                backgroundColor: "#f8792e",
+                                            }}
+                                            variant="contained"
+                                            size="large"
+                                        >
+                                            Hủy{" "}
+                                        </Button>
+                                    ) : <Button
+                                            onClick={()=>setSettings(!settings)}
+                                        sx={{
+                                            padding: "14px",
+                                            margin: "10px 20px 20px 20px",
+                                            width: "300px",
+                                            backgroundColor: "#f8792e",
+                                        }}
+                                        variant="contained"
+                                        size="large"
+                                    >
+                                        Chỉnh sửa{" "}
+                                    </Button>}
+                                    {settings ? (
+                                        <Button
+                                            type="submit"
+                                            sx={{
+                                                padding: "14px",
+                                                margin: "10px 20px 20px 20px",
+                                                width: "300px",
+                                                backgroundColor: "#f8792e",
+                                            }}
+                                            variant="contained"
+                                            size="large"
+                                            disabled={!isDirty}
+                                        >
+                                            Cập nhật{" "}
+                                        </Button>
+                                    ) : ""}
                                 </Box>
                             </Box>
-
                         </Box>
                     </form>
                     {contextHolder}
                 </Container>
-                <Box sx={{
-                    height: "40px",
-                }}></Box>
+                <Box
+                    sx={{
+                        height: "40px",
+                    }}
+                ></Box>
             </Box>
             <Footer />
         </Box>
