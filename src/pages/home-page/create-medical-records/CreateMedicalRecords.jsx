@@ -202,21 +202,6 @@ const CreateMedicalRecords = () => {
     },
   },];
   return (<Box>
-    <Header/>
-    <Box sx={{
-      width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px",
-    }}>
-      <Typography sx={{
-        color: "#26577C", fontSize: "40px", fontWeight: "600", textTransform: "uppercase",
-      }}>
-        tạo hồ sơ bệnh án cho bệnh nhân
-      </Typography>
-      <Typography sx={{
-        textTransform: "uppercase", color: "#26577C", fontSize: "25px", fontWeight: "400",
-      }}>
-        Create medical records for patients
-      </Typography>
-    </Box>
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{
@@ -444,7 +429,6 @@ const CreateMedicalRecords = () => {
     <Box sx={{
       height: "40px",
     }}></Box>
-    <Footer/>
   </Box>)
 }
 export default CreateMedicalRecords

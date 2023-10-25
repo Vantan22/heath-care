@@ -108,7 +108,8 @@ const FacultyManagement = () => {
           <Button sx={{
             minWidth: "200px",
             height: "50px",
-            alignItems: "left"
+            alignItems: "left",
+            backgroundColor: "#f8792e",
           }} variant="contained" size="medium"
                   onClick={toggleButton}>Add new Faculty</Button>)}
 

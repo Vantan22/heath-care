@@ -53,7 +53,7 @@ export default function NavTabs() {
     <Box sx={{ width: '100%' }}>
       <Tabs value={value} onChange={handleChange} aria-label="nav tabs example" orientation="vertical" >
         <LinkTab label="Faculty Management" href="/admin/faculty-management" />
-        <LinkTab label="Page Two" href="/trash" />
+        <LinkTab label="Medical Records" href="/admin/create-medical-records" />
         <LinkTab label="Page Three" href="/spam" />
       </Tabs>
     </Box>

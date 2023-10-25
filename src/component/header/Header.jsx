@@ -31,7 +31,8 @@ const Header = () => {
     navigate('/auth/login')
   }
   return (<header style={{
-    width: "100%", backgroundColor: "#E55604",
+    width: "100%", backgroundColor: "#E55604",position:"fixed",
+    zIndex:"10"
   }}>
     <Container>
       <Box sx={{

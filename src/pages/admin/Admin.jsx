@@ -15,7 +15,7 @@ const Admin = () => {
       <Header/>
       <Box sx={{
         flex: "1 1 0",
-        height: "100%",
+        marginTop:"80px"
       }}>
         <Container>
           <Box sx={{
@@ -32,7 +32,7 @@ const Admin = () => {
             display: "flex",
           }}>
             <Box sx={{
-              minWidth:"150px"
+             Width:"120px",
             }}>
               <NavTabs/>
             </Box>

@@ -24,13 +24,13 @@ function App() {
       <HomePage/>
     </PrivateRouter>}/>
     <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
-    <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
     <Route path="/contact" element={<ContactForm/>}/>
     <Route path="/about" element={<About/>}/>
     <Route path="/profile" element={<Profile/>}/>
     <Route path="/appointment-list" element={<AppointmentList/>}/>
     <Route path="/admin" element={<Admin/>}>
       <Route path="/admin/faculty-management" element={<FacultyManagement/>}/>
+      <Route path="/admin/create-medical-records" element={<CreateMedicalRecords/>}/>
     </Route>
   </Routes>)
 }
