@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import SignIn from "./pages/auth/sign-in/SignIn.jsx";
 import SignUp from "./pages/auth/sign-up/SignUp.jsx";
 import Auth from "./component/auth/Auth.jsx";
@@ -10,23 +10,29 @@ import ContactForm from "./pages/contact/Contact.jsx";
 import About from "./pages/about/About.jsx";
 import AppointmentList from "./pages/appointment-list/AppointmentList.jsx";
 import Admin from "./pages/admin/Admin.jsx";
+import FacultyManagement from "./pages/admin/faculty-management/FacultyManagement.jsx";
 
 import Profile from "./pages/profile/index.jsx";
+
 function App() {
-    return (<Routes>
-        <Route path="/auth" element={<Auth />}>
-            <Route path="/auth/login" element={<SignIn />} />
-            <Route path="/auth/register" element={<SignUp />} />
-        </Route>
-        <Route path="/" element={<PrivateRouter>
-            <HomePage/>
-        </PrivateRouter>}/>
-        <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
-        <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
-        <Route path="/contact" element={<ContactForm/>}/>
-        <Route path="/about" element={<About />}/>
-        <Route path="/profile" element={<Profile />} />
-    </Routes>)
+  return (<Routes>
+    <Route path="/auth" element={<Auth/>}>
+      <Route path="/auth/login" element={<SignIn/>}/>
+      <Route path="/auth/register" element={<SignUp/>}/>
+    </Route>
+    <Route path="/" element={<PrivateRouter>
+      <HomePage/>
+    </PrivateRouter>}/>
+    <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
+    <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
+    <Route path="/contact" element={<ContactForm/>}/>
+    <Route path="/about" element={<About/>}/>
+    <Route path="/profile" element={<Profile/>}/>
+    <Route path="/appointment-list" element={<AppointmentList/>}/>
+    <Route path="/admin" element={<Admin/>}>
+      <Route path="/admin/faculty-management" element={<FacultyManagement/>}/>
+    </Route>
+  </Routes>)
 }
 
 export default App
