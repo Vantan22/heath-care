@@ -27,22 +27,22 @@ export default function Profile() {
     const [avatarBase, setAvatarBase] = useState("");
     const [settings, setSettings] = useState(false);
     const [dataUser, setDataUser] = useState({});
-    const patientId = localStorage.getItem("id");
-    // const [avatar, setImageURL] = useState(dataUser.image);
+    const userId = localStorage.getItem("id");
+    const [isSuccess, setIsSuccess] =useState(true);
     const [valueGender, setValueGender] = useState(dataUser.gender);
     const [checkChange, setCheckChange] = useState(true);
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
         axios
-            .get(
-                `https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`
-            )
-            .then((response) => {
-                setDataUser(response.data);
-            })
-            .catch((error) => console.error(error));
+          .get(
+            `https://truculent-kick-production.up.railway.app/api/user/getByUserId/${userId}`
+          )
+          .then((response) => {
+            setDataUser(response.data);
+          })
+          .catch((error) => console.error(error));
     }, []);
-
+console.log("data user",dataUser);
     const handleChangeAvatar = async (e) => {
         const avatar = e.target.files[0];
         setSelectAvatar(avatar);
@@ -59,6 +59,7 @@ export default function Profile() {
                     .then((response) => {
                         if (response.data && response.data.data) {
                             setAvatarBase(response.data.data.url);
+                            setIsSuccess(false);
                         }
                     })
                     .catch((error) => {
@@ -82,39 +83,38 @@ export default function Profile() {
 
     const onSubmit = (data) => {
         axios
-            .post(
-                `https://truculent-kick-production.up.railway.app/api/patients/updatePatient/${patientId}`,
-                {
-                    image: avatarBase,
-                    id: patientId,
-                    fullName: data.fullName,
-                    email: data.email,
-                    age: data.age,
-                    phoneNumber: data.phoneNumber,
-                    weight: data.weight,
-                    height: data.height,
-                    gender: valueGender,
-                    address: data.address,
-                    dateOfBirth: data.dateOfBirth,
-                }
-            )
-            .then((response) => {
-                if (response.status === 200) {
-                    setDataUser(response.data);
-                    setCheckChange(true);
-                    messageApi.open({
-                        type: "success",
-                        content: "Chỉnh sửa thành công!",
-                        duration: 1.5,
-                        onClose: () => {
-                            reset();
-                            setSettings(false);
-                        },
-                    });
-                } else {
-                    console.log("Error posting data!");
-                }
-            });
+          .post(
+            `https://truculent-kick-production.up.railway.app/api/user/update/${userId}`,
+            {
+              image: avatarBase,
+              fullName: data.fullName,
+              email: data.email,
+              age: data.age,
+              phoneNumber: data.phoneNumber,
+              weight: data.weight,
+              height: data.height,
+              gender: valueGender,
+              address: data.address,
+              dateOfBirth: data.dateOfBirth,
+            }
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              setDataUser(response.data);
+              setCheckChange(true);
+              messageApi.open({
+                type: "success",
+                content: "Chỉnh sửa thành công!",
+                duration: 1.5,
+                onClose: () => {
+                  reset();
+                  setSettings(false);
+                },
+              });
+            } else {
+              console.log("Error posting data!");
+            }
+          });
     };
     const schema = yup
         .object({
@@ -767,7 +767,7 @@ export default function Profile() {
                                             }}
                                             variant="contained"
                                             size="large"
-                                            disabled={!isDirty ? checkChange : (checkChange && !isDirty)}
+                                            disabled={!isDirty ? checkChange : (checkChange && !isDirty && isSuccess)}
                                         >
                                             Cập nhật{" "}
                                         </Button>
