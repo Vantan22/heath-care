@@ -37,7 +37,8 @@ const Admin = () => {
               <NavTabs/>
             </Box>
             <Box sx={{
-              flex:"1"
+              flex:"1",
+              padding:"10px"
             }}><Outlet/></Box>
           </Box>
         </Container>
