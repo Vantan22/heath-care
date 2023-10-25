@@ -14,16 +14,16 @@ import {
 } from "@mui/material";
 import Header from "../../../component/header/Header.jsx";
 import * as yup from "yup";
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {DemoContainer} from "@mui/x-date-pickers/internals/demo/index.js";
-import {useEffect, useState} from "react";
-import {message, Radio} from "antd";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo/index.js";
+import { useEffect, useState } from "react";
+import { message, Radio } from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleAnAppoinment = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -44,7 +44,7 @@ const ScheduleAnAppoinment = () => {
             .get("https://truculent-kick-production.up.railway.app/api/specialization/getAll")
             .then((response) => {
                 setDepartments(response.data);
-                console.log('response.data',response.data)
+                console.log('response.data', response.data)
             })
             .catch((error) => console.error(error));
     }, []);
@@ -56,7 +56,6 @@ const ScheduleAnAppoinment = () => {
             "phoneNumber": data.phoneNumber,
             "appointmentTime": examinationTime,
             "purpose": data.purpose
-
         }).then((response) => {
             if (response.status === 200) {
                 messageApi.open({
@@ -73,7 +72,6 @@ const ScheduleAnAppoinment = () => {
     const onChange = (value) => {
         const convertTime = value.toISOString().replace("Z", "").slice(0, 23).replace(".000", "")
         setExaminationTime(convertTime)
-
     };
     const handleChange = () => {
     };
@@ -101,29 +99,29 @@ const ScheduleAnAppoinment = () => {
                 .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
                 .min(2, "Enter more than 6 characters")
                 .trim(), LastName: yup
-                .string()
-                .required("Please enter a user name")
-                .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
-                .min(2, "Enter more than 6 characters")
-                .trim(), email: yup
-                .string()
-                .required("Please enter a password")
-                .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Password without accents")
-                .min(6, "Enter more than 6 characters")
-                .trim(), phoneNumber: yup
-                .string()
-                .required("Please enter a password")
-                .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, "Password without accents")
-                .min(6, "Enter more than 6 characters")
-                .trim(),
+                    .string()
+                    .required("Please enter a user name")
+                    .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
+                    .min(2, "Enter more than 6 characters")
+                    .trim(), email: yup
+                        .string()
+                        .required("Please enter a password")
+                        .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Password without accents")
+                        .min(6, "Enter more than 6 characters")
+                        .trim(), phoneNumber: yup
+                            .string()
+                            .required("Please enter a password")
+                            .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, "Password without accents")
+                            .min(6, "Enter more than 6 characters")
+                            .trim(),
         })
         .required();
     const {
-        handleSubmit, formState: {errors}, register,
-    } = useForm({mode: "all", resolver: yupResolver(schema)});
+        handleSubmit, formState: { errors }, register,
+    } = useForm({ mode: "all", resolver: yupResolver(schema) });
 
     return (<Box>
-        <Header/>
+        <Header />
         <Box sx={{
             width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center",
             marginTop: "40px",
@@ -168,7 +166,7 @@ const ScheduleAnAppoinment = () => {
                         <Box sx={{
                             width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
                         }}>
-                            <FormControl error={!!errors.firstName} sx={{position: "relative", width: "45%"}}>
+                            <FormControl error={!!errors.firstName} sx={{ position: "relative", width: "45%" }}>
                                 <InputLabel htmlFor="input-firstName">firstName</InputLabel>
                                 <OutlinedInput
                                     sx={{
@@ -180,10 +178,10 @@ const ScheduleAnAppoinment = () => {
                                     {...register("firstName")}
                                     name="firstName"
                                 />
-                                <FormHelperText sx={{color: "red", height: "20px"}}
-                                                id="component-error-text">{errors.firstName && errors.firstName.message}</FormHelperText>
+                                <FormHelperText sx={{ color: "red", height: "20px" }}
+                                    id="component-error-text">{errors.firstName && errors.firstName.message}</FormHelperText>
                             </FormControl>
-                            <FormControl error={!!errors.LastName} sx={{position: "relative", width: "45%"}}>
+                            <FormControl error={!!errors.LastName} sx={{ position: "relative", width: "45%" }}>
                                 <InputLabel htmlFor="input-phoneNumber">LastName</InputLabel>
                                 <OutlinedInput
                                     sx={{
@@ -195,14 +193,14 @@ const ScheduleAnAppoinment = () => {
                                     {...register("LastName")}
                                     name="LastName"
                                 />
-                                <FormHelperText sx={{color: "red", height: "20px"}}
-                                                id="component-error-text">{errors.LastName && errors.LastName.message}</FormHelperText>
+                                <FormHelperText sx={{ color: "red", height: "20px" }}
+                                    id="component-error-text">{errors.LastName && errors.LastName.message}</FormHelperText>
                             </FormControl>
                         </Box>
                         <Box sx={{
                             width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
                         }}>
-                            <FormControl error={!!errors.email} sx={{position: "relative", width: "45%"}}>
+                            <FormControl error={!!errors.email} sx={{ position: "relative", width: "45%" }}>
                                 <InputLabel htmlFor="input-email">email</InputLabel>
                                 <OutlinedInput
                                     sx={{
@@ -214,10 +212,10 @@ const ScheduleAnAppoinment = () => {
                                     {...register("email")}
                                     name="email"
                                 />
-                                <FormHelperText sx={{color: "red", height: "20px"}}
-                                                id="component-error-text">{errors.email && errors.email.message}</FormHelperText>
+                                <FormHelperText sx={{ color: "red", height: "20px" }}
+                                    id="component-error-text">{errors.email && errors.email.message}</FormHelperText>
                             </FormControl>
-                            <FormControl error={!!errors.phoneNumber} sx={{position: "relative", width: "45%"}}>
+                            <FormControl error={!!errors.phoneNumber} sx={{ position: "relative", width: "45%" }}>
                                 <InputLabel htmlFor="input-phoneNumber">phoneNumber</InputLabel>
                                 <OutlinedInput
                                     sx={{
@@ -229,8 +227,8 @@ const ScheduleAnAppoinment = () => {
                                     {...register("phoneNumber")}
                                     name="phoneNumber"
                                 />
-                                <FormHelperText sx={{color: "red", height: "20px"}}
-                                                id="component-error-text">{errors.phoneNumber && errors.phoneNumber.message}</FormHelperText>
+                                <FormHelperText sx={{ color: "red", height: "20px" }}
+                                    id="component-error-text">{errors.phoneNumber && errors.phoneNumber.message}</FormHelperText>
                             </FormControl>
                         </Box>
                         <Box sx={{
@@ -240,7 +238,7 @@ const ScheduleAnAppoinment = () => {
                                 label="Weight"
                                 id="outlined-start-adornment"
                                 type="number"
-                                sx={{width: '45%'}}
+                                sx={{ width: '45%' }}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">kg</InputAdornment>,
                                 }}
@@ -249,7 +247,7 @@ const ScheduleAnAppoinment = () => {
                                 label="Height"
                                 id="outlined-start-adornment"
                                 type="number"
-                                sx={{width: '45%'}}
+                                sx={{ width: '45%' }}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">cm</InputAdornment>,
                                 }}
@@ -269,10 +267,10 @@ const ScheduleAnAppoinment = () => {
                                     <Radio value="female">Female</Radio>
                                 </Radio.Group>
                             </Box>
-                            <Box sx={{width: "45%"}}>
+                            <Box sx={{ width: "45%" }}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker label="Choose your examination time" onChange={onChange}/>
+                                        <DateTimePicker label="Choose your examination time" onChange={onChange} />
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
@@ -280,8 +278,7 @@ const ScheduleAnAppoinment = () => {
                         <Box sx={{
                             width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
                         }}>
-
-                            <FormControl sx={{width: "45%"}}>
+                            <FormControl sx={{ width: "45%" }}>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -292,10 +289,10 @@ const ScheduleAnAppoinment = () => {
                                     onChange={handleChangeDepartment}
                                 >
                                     {departments.map((value) => <MenuItem key={value.id}
-                                                                          value={value.id}>{value.specName}</MenuItem>)}
+                                        value={value.id}>{value.specName}</MenuItem>)}
                                 </Select>
                             </FormControl>
-                            <FormControl sx={{width: "45%"}}>
+                            <FormControl sx={{ width: "45%" }}>
                                 <InputLabel id="demo-simple-select-label">Specialized doctor</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -307,20 +304,18 @@ const ScheduleAnAppoinment = () => {
                                     onChange={handleChange}
                                 >
                                     {specialization.map((value) => <MenuItem key={value.id}
-                                                                             value={value.id}>{value.fullName}</MenuItem>)}
+                                        value={value.id}>{value.fullName}</MenuItem>)}
                                 </Select>
                             </FormControl>
                         </Box>
                         <Box sx={{
                             width: "100%", padding: "10px 20px",
                         }}>
-
-
                         </Box>
                         <Box sx={{
                             width: "100%", padding: "10px 20px",
                         }}>
-                            <FormControl sx={{position: "relative", width: "100%"}}>
+                            <FormControl sx={{ position: "relative", width: "100%" }}>
                                 <InputLabel htmlFor="input-purpose">purpose</InputLabel>
                                 <OutlinedInput
                                     sx={{
@@ -349,7 +344,6 @@ const ScheduleAnAppoinment = () => {
                             }} variant="contained" size="large">Đăng ký</Button>
                         </Box>
                     </Box>
-
                 </Box>
             </form>
             {contextHolder}
@@ -357,7 +351,7 @@ const ScheduleAnAppoinment = () => {
         <Box sx={{
             height: "40px",
         }}></Box>
-            <Footer/>
+        <Footer />
     </Box>)
 }
 export default ScheduleAnAppoinment
