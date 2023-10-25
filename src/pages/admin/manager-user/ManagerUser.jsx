@@ -150,7 +150,7 @@ const ManagerUser = () => {
                 <TablePagination
                     rowsPerPageOptions={ [ 10, 25, 100 ] }
                     component="div"
-                    count={ rows.length }
+                    count={ users.length }
                     rowsPerPage={ rowsPerPage }
                     page={ page }
                     onPageChange={ handleChangePage }
