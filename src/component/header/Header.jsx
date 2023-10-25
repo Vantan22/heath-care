@@ -31,10 +31,15 @@ const Header = () => {
     localStorage.removeItem('fullName')
     navigate('/auth/login')
   }
+  const handleNavigateProfile = () => {
+    navigate('/profile')
+  }
+  const handleNavigateAdmin = () => {
+    navigate('/admin/faculty-management')
+  }
   return (
     <Box sx={{
       height:'80px',
-      // marginBottom:'80px'
     }}>
 
       <header style={{
@@ -100,8 +105,9 @@ const Header = () => {
                   </Typography>
                   <Menu {...bindMenu(popupState)} >
                     <MenuItem sx={{
-                      width: "100px",
-                    }}><Link href={"/profile"}>Profile</Link></MenuItem>
+                      width: "150px",
+                    }} onClick={handleNavigateProfile}>Profile</MenuItem>
+                    <MenuItem onClick={handleNavigateAdmin}>Admin</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                 </>)}
