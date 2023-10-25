@@ -20,6 +20,7 @@ const Header = () => {
       )
       .then((response) => {
         setDataUser(response.data);
+        console.log(response.data)
       })
       .catch((error) => console.error(error));
   }, []);
@@ -32,7 +33,8 @@ const Header = () => {
   }
   return (
     <Box sx={{
-      height:'80px'
+      height:'80px',
+      // marginBottom:'80px'
     }}>
 
       <header style={{

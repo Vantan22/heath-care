@@ -5,7 +5,7 @@ import Auth from "./component/auth/Auth.jsx";
 import PrivateRouter from "./component/auth/PrivateRouter.jsx";
 import HomePage from "./pages/home-page/index.jsx";
 import ScheduleAnAppoinment from "./pages/home-page/schedule-an-appointment/ScheduleAnAppoinment.jsx";
-import CreateMedicalRecords from "./pages/home-page/create-medical-records/CreateMedicalRecords.jsx";
+import CreateMedicalRecords from "./pages/admin/create-medical-records/CreateMedicalRecords.jsx";
 import ContactForm from "./pages/contact/Contact.jsx";
 import About from "./pages/about/About.jsx";
 import AppointmentList from "./pages/appointment-list/AppointmentList.jsx";
@@ -13,6 +13,7 @@ import Admin from "./pages/admin/Admin.jsx";
 import FacultyManagement from "./pages/admin/faculty-management/FacultyManagement.jsx";
 
 import Profile from "./pages/profile/index.jsx";
+import ManagerUser from "./pages/admin/manager-user/ManagerUser.jsx";
 
 function App() {
   return (<Routes>
@@ -31,6 +32,7 @@ function App() {
     <Route path="/admin" element={<Admin/>}>
       <Route path="/admin/faculty-management" element={<FacultyManagement/>}/>
       <Route path="/admin/create-medical-records" element={<CreateMedicalRecords/>}/>
+      <Route path="/admin/user-management" element={<ManagerUser/>}/>
     </Route>
   </Routes>)
 }

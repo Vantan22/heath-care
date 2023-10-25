@@ -54,7 +54,7 @@ export default function NavTabs() {
       <Tabs value={value} onChange={handleChange} aria-label="nav tabs example" orientation="vertical" >
         <LinkTab label="Faculty Management" href="/admin/faculty-management" />
         <LinkTab label="Medical Records" href="/admin/create-medical-records" />
-        <LinkTab label="Page Three" href="/spam" />
+        <LinkTab label="User Management" href="/admin/user-management" />
       </Tabs>
     </Box>
   );
