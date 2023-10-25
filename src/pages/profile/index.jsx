@@ -21,95 +21,66 @@ import { useForm } from "react-hook-form";
 import Header from "../../component/header/Header";
 import Footer from "../../component/footer/Footer";
 import axios, { Axios } from "axios";
-import handleImage from "../../../axios-config-handle-image";
 export default function Profile() {
     const [messageApi, contextHolder] = message.useMessage();
     const [selectAvatar, setSelectAvatar] = useState(null);
     const [avatarBase, setAvatarBase] = useState("");
     const [settings, setSettings] = useState(false);
-    const [dataUser, setDataUser] = useState({});// ??? dât obj nhưng dể def
+    const [dataUser, setDataUser] = useState({});
     const patientId = localStorage.getItem("id");
-    const [avatar, setImageURL] = useState(dataUser.image);
+    // const [avatar, setImageURL] = useState(dataUser.image);
     const [valueGender, setValueGender] = useState(dataUser.gender);
+    const [checkChange, setCheckChange] = useState(true);
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
         axios
-            .get(`https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`)
+            .get(
+                `https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`
+            )
             .then((response) => {
-                console.log("getData:", response);
                 setDataUser(response.data);
             })
             .catch((error) => console.error(error));
-    }, [])
+    }, []);
 
     const handleChangeAvatar = async (e) => {
         const avatar = e.target.files[0];
         setSelectAvatar(avatar);
+        setCheckChange(false);
         if (avatar) {
             const formData = new FormData();
-            formData.append('image', avatar);
-            console.log('avatar', avatar);
+            formData.append("image", avatar);
             try {
-                const response = await axios.post('http://api.imgur.com/3/image', formData, {
-                    headers: {
-                        Authorization: 'Client-ID 83dc8c472881fb0',
-                    },
-                });
-                console.log("response:", response);
-                const imageUrl = response.data.data.link;
-                setAvatarBase(imageUrl);
+                axios
+                    .post(
+                        "https://api.imgbb.com/1/upload?key=e2dc877ffdfc4625d5b0650e3ab34309",
+                        formData
+                    )
+                    .then((response) => {
+                        if (response.data && response.data.data) {
+                            setAvatarBase(response.data.data.url);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error uploading image: ", error);
+                    });
             } catch (error) {
-                console.error('Error uploading image to Imgur:', error);
+                console.error("Error uploading image to Imgur:", error);
             }
         }
-
-    }
+    };
     const handleCancelBtn = (e) => {
         setSettings(!settings);
         setSelectAvatar(null);
+        setCheckChange(true);
         reset();
     };
     const handleChangeGender = (event) => {
         setValueGender(event.target.value);
+        setCheckChange(false);
     }
 
-    // Hàm tải hình ảnh lên Imgur
-    // const handleImageChange = async () => {
-    //     const formData = new FormData();
-    //     formData.append('image', selectAvatar);
-
-    //     // Thay 'YOUR_CLIENT_ID' bằng Client ID của bạn từ Imgur
-    //     try {
-    //         const response = await axios.post('https://api.imgur.com/3/image', formData, {
-    //             headers: {
-    //                 Authorization: 'Client-ID 83dc8c472881fb0',
-    //             },
-    //         });
-
-    //         const imageUrl = response.data.data.link;
-    //         console.log('Link to uploaded image:', imageUrl);
-    //         setImgUrl(imageUrl);
-    //     } catch (error) {
-    //         console.error('Error uploading image to Imgur:', error);
-    //     }
-    // };
-
     const onSubmit = (data) => {
-        console.log("submitData", {
-            image: avatarBase,
-            id: patientId,
-            fullName: data.fullName,
-            email: data.email,
-            age: data.age,
-            phoneNumber: data.phoneNumber,
-            weight: data.weight,
-            height: data.height,
-            gender: valueGender,
-            address: data.address,
-            setTing: settings,
-            dateOfBirth: data.dateOfBirth,
-            avatarChage: data.avatar
-        });
         axios
             .post(
                 `https://truculent-kick-production.up.railway.app/api/patients/updatePatient/${patientId}`,
@@ -130,6 +101,7 @@ export default function Profile() {
             .then((response) => {
                 if (response.status === 200) {
                     setDataUser(response.data);
+                    setCheckChange(true);
                     messageApi.open({
                         type: "success",
                         content: "Chỉnh sửa thành công!",
@@ -137,7 +109,6 @@ export default function Profile() {
                         onClose: () => {
                             reset();
                             setSettings(false);
-                            console.log("settings", settings);
                         },
                     });
                 } else {
@@ -271,7 +242,6 @@ export default function Profile() {
                                                             : dataUser.image
                                                     }
                                                     htmlFor="input-avatar"
-                                                    {...register("avatar")}
                                                     name="avatar"
                                                 />
                                             ) : (
@@ -367,7 +337,7 @@ export default function Profile() {
                                                     }}
                                                     id="input-age"
                                                     label="age"
-                                                    type="text"
+                                                    type="number"
                                                     {...register("age")}
                                                     name="age"
                                                     defaultValue={dataUser.age}
@@ -394,7 +364,7 @@ export default function Profile() {
                                                         marginBottom: "0px",
                                                     }}
                                                 >
-                                                    {dataUser.age}
+                                                    {dataUser.age == 0 ? "Chưa cập nhật số tuổi" : dataUser.age}
                                                 </Typography>
                                             </>
                                         )}
@@ -472,7 +442,6 @@ export default function Profile() {
                                                     {...register("phoneNumber")}
                                                     name="phoneNumber"
                                                     defaultValue={dataUser.phoneNumber}
-                                                //   onChange={handleChangePhoneNumber}
                                                 />
                                                 <FormHelperText
                                                     sx={{ color: "red", height: "20px" }}
@@ -599,14 +568,13 @@ export default function Profile() {
                                     >
                                         {settings ? (
                                             <>
-                                                <InputLabel htmlFor="input-dateOfBirth">DateOfBirth</InputLabel>
+                                                {/* <InputLabel htmlFor="input-dateOfBirth">DateOfBirth</InputLabel> */}
                                                 <OutlinedInput
-
                                                     sx={{
                                                         paddingRight: "32px",
                                                     }}
-                                                    id="input-dateOfBirth"
-                                                    label="Required"
+                                                    // id="input-dateOfBirth"
+                                                    // label="Required"
                                                     type="date"
                                                     {...register("dateOfBirth")}
                                                     name="dateOfBirth"
@@ -799,7 +767,7 @@ export default function Profile() {
                                             }}
                                             variant="contained"
                                             size="large"
-                                            disabled={!isDirty}
+                                            disabled={!isDirty ? checkChange : (checkChange && !isDirty)}
                                         >
                                             Cập nhật{" "}
                                         </Button>
