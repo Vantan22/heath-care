@@ -4,10 +4,25 @@ import { MENU_NAVIGATE } from "../../constant/MENU_NAVIGATE.js";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
 import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Header = () => {
   const navigate = useNavigate()
   const currentName = localStorage.getItem('fullName')
+  const [dataUser, setDataUser] = useState({});
+  const patientId = localStorage.getItem("id");
+  useEffect(() => {
+    // Gọi API khi component được mount lần đầu
+    axios
+      .get(
+        `https://truculent-kick-production.up.railway.app/api/patients/getPatient/${patientId}`
+      )
+      .then((response) => {
+        setDataUser(response.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('username')
@@ -56,11 +71,11 @@ const Header = () => {
                 cursor: "pointer",
               }} variant="contained" {...bindTrigger(popupState)}>
                 <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar alt="Remy Sharp" sizes="20" src="/static/images/avatar/1.jpg" />
+                  <Avatar alt="Remy Sharp" sizes="20" src={dataUser.image ? dataUser.image : "/static/images/avatar/1.jpg"} />
                   <Typography sx={{
                     fontSize: "18px",
                     fontWeight: "500",
-                  }}>{currentName}</Typography>
+                  }}>{dataUser.fullName}</Typography>
                 </Stack>
               </Typography>
               <Menu {...bindMenu(popupState)} >
