@@ -9,21 +9,25 @@ import CreateMedicalRecords from "./pages/home-page/create-medical-records/Creat
 import ContactForm from "./pages/contact/Contact.jsx";
 import About from "./pages/about/About.jsx";
 import AppointmentList from "./pages/appointment-list/AppointmentList.jsx";
+import Admin from "./pages/admin/Admin.jsx";
 
 function App() {
-    return (<Routes>
-        <Route path="/auth" element={<Auth/>}>
-            <Route path="/auth/login" element={<SignIn/>}/>
-            <Route path="/auth/register" element={<SignUp/>}/>
-        </Route>
-        <Route path="/" element={<PrivateRouter>
-            <HomePage/>
-        </PrivateRouter>}/>
-        <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
-        <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
-        <Route path="/contact" element={<ContactForm/>}/>
-        <Route path="/about" element={<About />}/>
-      <Route path="/appointment-list" element={<AppointmentList />}/>
-    </Routes>)
+  return (<Routes>
+    <Route path="/auth" element={<Auth/>}>
+      <Route path="/auth/login" element={<SignIn/>}/>
+      <Route path="/auth/register" element={<SignUp/>}/>
+    </Route>
+    <Route path="/" element={<PrivateRouter>
+      <HomePage/>
+    </PrivateRouter>}/>
+    <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
+    <Route path="/create-medical-records" element={<CreateMedicalRecords/>}/>
+    <Route path="/contact" element={<ContactForm/>}/>
+    <Route path="/about" element={<About/>}/>
+    <Route path="/appointment-list" element={<AppointmentList/>}/>
+    <Route path="/admin" element={<Admin/>}>
+    </Route>
+  </Routes>)
 }
+
 export default App
