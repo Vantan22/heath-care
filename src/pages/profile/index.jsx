@@ -129,17 +129,14 @@ console.log("data user",dataUser);
                 .trim(),
             age: yup
                 .string()
-                .required("Please enter a age")
                 .max(3, "Enter than 3 characters").trim(),
             email: yup
                 .string()
-                .required("Please enter a email")
                 .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "email without accents")
                 .min(6, "Enter more than 6 characters")
                 .trim(),
             phoneNumber: yup
                 .string()
-                .required("Please enter a phone number")
                 .matches(
                     /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
                     "Phone number without accents"
@@ -392,6 +389,7 @@ console.log("data user",dataUser);
                                                     id="input-email"
                                                     label="Required"
                                                     type="email"
+                                                    disabled={true}
                                                     {...register("email")}
                                                     name="email"
                                                     defaultValue={dataUser.email}
@@ -443,12 +441,6 @@ console.log("data user",dataUser);
                                                     name="phoneNumber"
                                                     defaultValue={dataUser.phoneNumber}
                                                 />
-                                                <FormHelperText
-                                                    sx={{ color: "red", height: "20px" }}
-                                                    id="component-error-text"
-                                                >
-                                                    {errors.phoneNumber && errors.phoneNumber.message}
-                                                </FormHelperText>
                                             </>
                                         ) : (
                                             <>
