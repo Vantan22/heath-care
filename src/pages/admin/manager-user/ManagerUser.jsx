@@ -102,7 +102,7 @@ const ManagerUser = () => {
         }
     }
     const handleChangeRole = async () => {
-        await HTTP.post('https://truculent-kick-production.up.railway.app//admin/updateUserToDoctor', {
+        await HTTP.post('https://truculent-kick-production.up.railway.app/admin/updateUserToDoctor', {
             "userId": currentUser.id,
             "specld": departmentId
         })
@@ -136,7 +136,7 @@ const ManagerUser = () => {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     return (<TableRow hover role="checkbox" tabIndex={ -1 } key={ index }
-                                                      onClick={ () => handleGetId(row, row.roleNames, row.fullName) }>
+                                                      onClick={ () => handleGetId(row.id, row.roleNames, row.fullName) }>
                                         { columns.map((column, index) => {
                                             const value = row[column.id];
                                             return (<TableCell key={ index } align={ column.align }>
