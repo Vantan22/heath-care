@@ -64,12 +64,12 @@ const ManagerUser = () => {
     const [ isRole, setIsRole ] = useState(false)
     const getUsers = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/user/getAll')
+        console.log("data", data)
         setUsers(data)
     }
     const getAllFaculty = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/specialization/getAll')
         setFacultys(data)
-        console.log(data)
     }
     useEffect(() => {
         getAllFaculty()
@@ -88,6 +88,7 @@ const ManagerUser = () => {
         const find = roleNames.find((role) => role === "ROLE_DOCTOR")
         setIsRole(find)
         const roleResult = roleNames.join(",")
+        console.log("id", id)
         setCurrentUser({
             id: id,
             roleNames: roleResult,
@@ -135,7 +136,7 @@ const ManagerUser = () => {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     return (<TableRow hover role="checkbox" tabIndex={ -1 } key={ index }
-                                                      onClick={ () => handleGetId(row.id, row.roleNames, row.fullName) }>
+                                                      onClick={ () => handleGetId(row, row.roleNames, row.fullName) }>
                                         { columns.map((column, index) => {
                                             const value = row[column.id];
                                             return (<TableCell key={ index } align={ column.align }>

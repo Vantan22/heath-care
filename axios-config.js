@@ -5,7 +5,9 @@ const HTTP = axios.create({
   timeout: 10000, // Thời gian tối đa cho mỗi yêu cầu (10 giây trong trường hợp này)
   headers: {
     'Authorization': 'Bearer your-access-token', // Tiêu đề Authorization
-    'Content-Type': 'application/json', // Tiêu đề Content-Type
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',// Tiêu đề Content-Type
     // Thêm tiêu đề khác nếu cần
   },
 });

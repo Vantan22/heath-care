@@ -4,7 +4,9 @@ const handleImage = axios.create({
     baseURL: 'https://api.imgbb.com', // Thay thế bằng URL của API của bạn
     headers: {
         'Authorization': 'Bearer your-access-token', // Tiêu đề Authorization
-        'Content-Type': 'application/json', // Tiêu đề Content-Type
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',// Tiêu đề Content-Type
         // Thêm tiêu đề khác nếu cần
     },
 });
