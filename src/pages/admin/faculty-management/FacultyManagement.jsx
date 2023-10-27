@@ -6,9 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import HTTP from "../../../../axios-config.js";
-import {Button, TextField} from "@mui/material";
+import { Button, Container, TextField } from "@mui/material";
 
 const FacultyManagement = () => {
   const [facultys, setFacultys] = useState([])
@@ -39,16 +39,19 @@ const FacultyManagement = () => {
   }
 
   return (
+    <Container>
     <Box sx={{
       display: "flex",
       flexDirection: "column",
-      rowGap: "10px"
+      rowGap: "10px",
+      width: "calc(100vw - 200px)",
+      margin: "0 auto"
     }}>
       <Paper sx={{
         width: '100%',
         overflow: 'hidden'
       }}>
-        <TableContainer component={Paper} sx={{height: 440}}>
+        <TableContainer component={Paper} sx={{ height: 440 }}>
           <Table sx={{
             minWidth: 200,
             color: "black"
@@ -71,7 +74,7 @@ const FacultyManagement = () => {
               {facultys.map((row) => (
                 <TableRow
                   key={row.id}
-                  sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     {row.specName}
@@ -83,7 +86,7 @@ const FacultyManagement = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <hr/>
+      <hr />
       <Box
         sx={{
           display: "flex",
@@ -98,23 +101,24 @@ const FacultyManagement = () => {
           {isAddFaculty && (<TextField sx={{
             height: "50px"
           }} id="outlined-basic" label="Faculty name" variant="outlined" fullWidth
-                                       onChange={handleChangeValue}/>)}
+            onChange={handleChangeValue} />)}
         </Box>
         {isAddFaculty ? (<Button sx={{
           minWidth: "200px",
           height: "50px",
           alignItems: "left"
-        }} variant="contained" size="medium"  onClick={handleSubmit}>Confirm</Button>) : (
+        }} variant="contained" size="medium" onClick={handleSubmit}>Confirm</Button>) : (
           <Button sx={{
             minWidth: "200px",
             height: "50px",
             alignItems: "left",
-            backgroundColor: "#f8792e",
+            backgroundColor: "#363432",
           }} variant="contained" size="medium"
-                  onClick={toggleButton}>Add new Faculty</Button>)}
+            onClick={toggleButton}>Add new Faculty</Button>)}
 
       </Box>
     </Box>
+    </Container>
   )
 }
 export default FacultyManagement
