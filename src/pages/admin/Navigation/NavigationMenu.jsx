@@ -2,8 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import {useNavigate} from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 function samePageLinkNavigation(event) {
   if (
     event.defaultPrevented ||
@@ -24,7 +26,7 @@ function LinkTab(props) {
     <Tab
       component="a"
       onClick={(event) => {
-        const a = {...props}
+        const a = { ...props }
         navigate(a.href)
         // Routing libraries handle this, you can remove the onClick handle when using them.
         if (samePageLinkNavigation(event)) {
@@ -50,11 +52,23 @@ export default function NavTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%',paddingTop:"20px" }}>
       <Tabs value={value} onChange={handleChange} aria-label="nav tabs example" orientation="vertical" >
-        <LinkTab label="Faculty Management" href="/admin/faculty-management" />
-        <LinkTab label="Medical Records" href="/admin/create-medical-records" />
-        <LinkTab label="User Management" href="/admin/user-management" />
+        <LinkTab label="Faculty Management" href="/admin/faculty-management" sx={{
+          color: "#ffff"
+        }} icon={<ReceiptLongIcon sx={{
+          color:"#ffff"
+        }}/>} />
+        <LinkTab label="Medical Records" href="/admin/create-medical-records" sx={{
+          color: "#ffff"
+        }} icon={<AssignmentIcon sx={{
+          color: "#ffff"
+        }} />} />
+        <LinkTab label="User Management" href="/admin/user-management" sx={{
+          color: "#ffff"
+        }} icon={<AdminPanelSettingsIcon sx={{
+          color: "#ffff"
+        }} />} />
       </Tabs>
     </Box>
   );
