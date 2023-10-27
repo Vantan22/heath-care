@@ -51,7 +51,6 @@ export default function NavTabs() {
       setValue(newValue);
     }
   };
-
   return (
     <Box sx={{ width: '100%', paddingTop: "20px" }}>
       <Tabs value={value} onChange={handleChange} aria-label="nav tabs example" orientation="vertical" >

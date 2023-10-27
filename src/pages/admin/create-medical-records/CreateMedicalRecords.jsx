@@ -350,8 +350,6 @@ const CreateMedicalRecords = () => {
               borderTopRightRadius: "5px",
               borderTopLeftRadius: "5px",
             }}>2. Test result</Typography>
-
-            {/**/}
             <Box sx={{
               width: "100%", padding: "10px 20px", display: "flex", flexDirection: "column", rowGap: "10px",
             }}>
@@ -387,7 +385,7 @@ const CreateMedicalRecords = () => {
               <OutlinedInput name="notesFromDoctor" {...register("notesFromDoctor")} multiline
                              rows={4}/>
             </Box>
-            <Box sx={{}}>
+            <Box>
               <Box
                 sx={{
                   height: 500, width: '100%', '& .actions': {

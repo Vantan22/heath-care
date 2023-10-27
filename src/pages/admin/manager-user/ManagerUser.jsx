@@ -114,7 +114,6 @@ const ManagerUser = () => {
                 display: "flex",
                 flexDirection: "column",
                 rowGap: "20px",
-                // maxWidth: "calc(100% - 100px)",
                 width: "calc(100vw - 200px)",
             }}>
                 <Box>
