@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import HomeIcon from '@mui/icons-material/Home';
 function samePageLinkNavigation(event) {
   if (
     event.defaultPrevented ||
@@ -52,13 +53,13 @@ export default function NavTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%',paddingTop:"20px" }}>
+    <Box sx={{ width: '100%', paddingTop: "20px" }}>
       <Tabs value={value} onChange={handleChange} aria-label="nav tabs example" orientation="vertical" >
         <LinkTab label="Faculty Management" href="/admin/faculty-management" sx={{
           color: "#ffff"
         }} icon={<ReceiptLongIcon sx={{
-          color:"#ffff"
-        }}/>} />
+          color: "#ffff"
+        }} />} />
         <LinkTab label="Medical Records" href="/admin/create-medical-records" sx={{
           color: "#ffff"
         }} icon={<AssignmentIcon sx={{
@@ -67,6 +68,11 @@ export default function NavTabs() {
         <LinkTab label="User Management" href="/admin/user-management" sx={{
           color: "#ffff"
         }} icon={<AdminPanelSettingsIcon sx={{
+          color: "#ffff"
+        }} />} />
+        <LinkTab label="Home" href="/" sx={{
+          color: "#ffff"
+        }} icon={<HomeIcon sx={{
           color: "#ffff"
         }} />} />
       </Tabs>
