@@ -16,14 +16,15 @@ const AppointmentList = () => {
     const data = await HTTP.get(`/api/appointment/getByUserId/${userId}`)
     const value = data.map((item, index) => {
       return {
-        id: item.id,
+        id: item.appointment.id,
         index: index + 1,
-        doctor: item.doctor.fullName,
-        name: item.patient.fullName,
-        registrationDate: convertAppointmentTime(item.appointmentTime),
-        appointmentDate: convertTimeAndDate(item.appointmentTime),
+        doctor: item.doctorName,
+        name: item.patientName,
+        registrationDate: convertAppointmentTime(item.appointment.appointmentTime),
+        appointmentDate: convertTimeAndDate(item.appointment.appointmentTime),
       }
     })
+    console.log('data',data)
     setValues(data)
     setAppointments(value)
   }
@@ -32,7 +33,9 @@ const AppointmentList = () => {
     return getData;
   }, []);
   const onClickHideDetail = (data) => {
-    const handleDetailValue = values.find((item) => item.id === data)
+    console.log(data)
+    const handleDetailValue = values.find((item) => item.appointment.id === data)
+    console.log(handleDetailValue)
     setAppointmentDetail(handleDetailValue)
   }
   return (<Box sx={{
@@ -86,16 +89,7 @@ const AppointmentList = () => {
                 alignItems: "center",
               }}>
                 <Typography>Doctor name : </Typography>
-                <Typography>Doctor name</Typography>
-              </Box>
-              <Box sx={{
-                width: "100%",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-              }}>
-                <Typography>Doctor name : </Typography>
-                <Typography>Doctor name</Typography>
+                <Typography>{appointmentDetail?.doctorName}</Typography>
               </Box>
               <Box sx={{
                 width: "100%",
@@ -104,7 +98,8 @@ const AppointmentList = () => {
                 alignItems: "center",
               }}>
                 <Typography>Registration Date: </Typography>
-                <Typography>{convertAppointmentTime(appointmentDetail?.appointmentTime)}</Typography>
+                <Typography>{convertAppointmentTime(appointmentDetail?.appointment
+                    .appointmentTime)}</Typography>
               </Box>
               <Box sx={{
                 width: "100%",
@@ -113,7 +108,8 @@ const AppointmentList = () => {
                 alignItems: "center",
               }}>
                 <Typography>Appointment time: </Typography>
-                <Typography>{convertTimeAndDate(appointmentDetail?.createdAt)}</Typography>
+                <Typography>{convertTimeAndDate(appointmentDetail?.appointment
+                    .createdAt)}</Typography>
               </Box>
               <Box sx={{
                 width: "100%",
@@ -122,7 +118,8 @@ const AppointmentList = () => {
                 alignItems: "center",
               }}>
                 <Typography>Registration phone: </Typography>
-                <Typography>{appointmentDetail?.phoneNumber}</Typography>
+                <Typography>{appointmentDetail?.appointment
+                    .phoneNumber}</Typography>
               </Box>
               <Box sx={{
                 width: "100%",
@@ -132,7 +129,8 @@ const AppointmentList = () => {
                 alignItems: "flex-start",
               }}>
                 <Typography>Purpose: </Typography>
-                <Typography>{appointmentDetail?.purpose}</Typography>
+                <Typography>{appointmentDetail?.appointment
+                    .purpose}</Typography>
               </Box>
             </Box>
             <Box sx={{
@@ -149,14 +147,15 @@ const AppointmentList = () => {
                   display: "flex",
                 }}>
                   <Typography>Full name: </Typography>
-                  <Typography>{appointmentDetail?.patient?.fullName}</Typography>
+                  <Typography>{appointmentDetail?.patientName}</Typography>
                 </Box>
                 <Box sx={{
                   width: "50%",
                   display: "flex",
                 }}>
                   <Typography>Date of Birth: </Typography>
-                  <Typography>{appointmentDetail?.patient?.dateOfBirth}</Typography>
+                  <Typography>{appointmentDetail?.appointment
+                    .patient?.dateOfBirth}</Typography>
                 </Box>
               </Box>
               <Box sx={{
@@ -169,14 +168,14 @@ const AppointmentList = () => {
                   display: "flex",
                 }}>
                   <Typography>email: </Typography>
-                  <Typography>{appointmentDetail?.patient?.email}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.email}</Typography>
                 </Box>
                 <Box sx={{
                   width: "50%",
                   display: "flex",
                 }}>
                   <Typography>phoneNumber: </Typography>
-                  <Typography>{appointmentDetail?.patient?.phoneNumber}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.phoneNumber}</Typography>
                 </Box>
               </Box>
               <Box sx={{
@@ -189,14 +188,14 @@ const AppointmentList = () => {
                   display: "flex",
                 }}>
                   <Typography>age: </Typography>
-                  <Typography>{appointmentDetail?.patient?.age}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.age}</Typography>
                 </Box>
                 <Box sx={{
                   width: "50%",
                   display: "flex",
                 }}>
                   <Typography>gender: </Typography>
-                  <Typography>{appointmentDetail?.patient?.gender}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.gender}</Typography>
                 </Box>
               </Box>
               <Box sx={{
@@ -209,14 +208,14 @@ const AppointmentList = () => {
                   display: "flex",
                 }}>
                   <Typography>height: </Typography>
-                  <Typography>{appointmentDetail?.patient?.height}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.height}</Typography>
                 </Box>
                 <Box sx={{
                   width: "50%",
                   display: "flex",
                 }}>
                   <Typography>weight: </Typography>
-                  <Typography>{appointmentDetail?.patient?.weight}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.weight}</Typography>
                 </Box>
               </Box>
               <Box sx={{
@@ -229,7 +228,7 @@ const AppointmentList = () => {
                   display: "flex",
                 }}>
                   <Typography>address: </Typography>
-                  <Typography>{appointmentDetail?.patient?.address}</Typography>
+                  <Typography>{appointmentDetail?.appointment.patient?.address}</Typography>
                 </Box>
               </Box>
             </Box>

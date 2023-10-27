@@ -64,12 +64,12 @@ const ManagerUser = () => {
     const [isRole, setIsRole] = useState(false)
     const getUsers = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/user/getAll')
+        console.log("data", data)
         setUsers(data)
     }
     const getAllFaculty = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/specialization/getAll')
         setFacultys(data)
-        console.log(data)
     }
     useEffect(() => {
         getAllFaculty()
@@ -88,6 +88,7 @@ const ManagerUser = () => {
         const find = roleNames.find((role) => role === "ROLE_DOCTOR")
         setIsRole(find)
         const roleResult = roleNames.join(",")
+        console.log("id", id)
         setCurrentUser({
             id: id,
             roleNames: roleResult,
@@ -101,7 +102,7 @@ const ManagerUser = () => {
         }
     }
     const handleChangeRole = async () => {
-        await HTTP.post('https://truculent-kick-production.up.railway.app//admin/updateUserToDoctor', {
+        await HTTP.post('https://truculent-kick-production.up.railway.app/admin/updateUserToDoctor', {
             "userId": currentUser.id,
             "specld": departmentId
         })

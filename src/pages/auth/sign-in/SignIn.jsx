@@ -44,7 +44,7 @@ const SignIn = () => {
         } else {
           messageApi.open({
             type: 'error',
-            content: 'Login error, please try again!',
+            content: `${response.data}`,
             duration: 1.5
           });
         }
@@ -52,7 +52,7 @@ const SignIn = () => {
       .catch((error) => {
         messageApi.open({
           type: 'error',
-          content: `Login error, please try again! ${error}`,
+          content: "Sai email hoặc mật khẩu!",
           duration: 2
         });
       });

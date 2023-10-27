@@ -24,7 +24,7 @@ import { message, Radio } from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
 import { useNavigate } from "react-router-dom";
-
+import dayjs from 'dayjs';
 const ScheduleAnAppoinment = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
@@ -37,6 +37,10 @@ const ScheduleAnAppoinment = () => {
     const [examinationTime, setExaminationTime] = useState('');
     const [departments, setDepartments] = useState([]);
     const patientId = localStorage.getItem('id')
+
+
+    const datetimeFormat = 'YYYY-MM-DDTHH:mm:00';
+
 
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
@@ -70,7 +74,7 @@ const ScheduleAnAppoinment = () => {
     };
 
     const onChange = (value) => {
-        const convertTime = value.toISOString().replace("Z", "").slice(0, 23).replace(".000", "")
+        const convertTime = value.format(datetimeFormat)
         setExaminationTime(convertTime)
     };
     const handleChange = () => {
