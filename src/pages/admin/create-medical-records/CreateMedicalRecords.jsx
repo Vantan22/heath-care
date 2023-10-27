@@ -207,17 +207,16 @@ const CreateMedicalRecords = () => {
         <Box sx={{
           display: "flex",
           flexDirection: "column",
-          marginTop: "20px",
           borderRadius: "10px",
           boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 5px",
           border: "1px solid #B4B4B3",
-          width: "100%",
+          width: "calc(100vw - 200px)",
           position: "relative",
         }}>
           <Typography sx={{
             display: "flex",
             height: "60px",
-            backgroundColor: "#f88848",
+            backgroundColor: "#363432",
             borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
             padding: "20px",
@@ -233,7 +232,7 @@ const CreateMedicalRecords = () => {
               fontSize: "18px",
               width: "100%",
               height: "30px",
-              backgroundColor: "#ffa06c",
+              backgroundColor: "#363432",
               color: "#fff",
               borderTopRightRadius: "5px",
               borderTopLeftRadius: "5px",
@@ -346,13 +345,11 @@ const CreateMedicalRecords = () => {
               fontSize: "18px",
               width: "100%",
               height: "30px",
-              backgroundColor: "#ffa06c",
+              backgroundColor: "#363432",
               color: "#fff",
               borderTopRightRadius: "5px",
               borderTopLeftRadius: "5px",
             }}>2. Test result</Typography>
-
-            {/**/}
             <Box sx={{
               width: "100%", padding: "10px 20px", display: "flex", flexDirection: "column", rowGap: "10px",
             }}>
@@ -388,7 +385,7 @@ const CreateMedicalRecords = () => {
               <OutlinedInput name="notesFromDoctor" {...register("notesFromDoctor")} multiline
                              rows={4}/>
             </Box>
-            <Box sx={{}}>
+            <Box>
               <Box
                 sx={{
                   height: 500, width: '100%', '& .actions': {
@@ -419,7 +416,7 @@ const CreateMedicalRecords = () => {
               width: "100%", display: "flex", justifyContent: "flex-end",
             }}>
               <Button type="submit" sx={{
-                padding: "14px", margin: "10px 20px 20px 20px", width: "300px", backgroundColor: "#f8792e",
+                padding: "14px", margin: "10px 20px 20px 20px", width: "300px", backgroundColor: "#363432",
               }} variant="contained" size="large">Đăng ký</Button>
             </Box>
           </Box>
