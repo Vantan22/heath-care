@@ -70,9 +70,11 @@ const DoctorList = () => {
         flexDirection: "column",
         height: "100vh",
     } }>
-        <Header/>
+        <Box sx={{
+            height: "80px",
+        }}><Header/></Box>
         <Box sx={ {
-            flex: "1 1 0"
+            flex: "1 1 0",
         } }>
             <Container>
                 <Box sx={ {
