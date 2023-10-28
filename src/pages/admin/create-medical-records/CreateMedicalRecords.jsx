@@ -212,7 +212,6 @@ const CreateMedicalRecords = () => {
             const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
             if (isInEditMode) {
-                // eslint-disable-next-line react/jsx-key
                 return [ <GridActionsCellItem
                     icon={ <SaveIcon/> }
                     label="Save"
@@ -220,7 +219,6 @@ const CreateMedicalRecords = () => {
                         color: 'primary.main',
                     } }
                     onClick={ handleSaveClick(id) }
-                    {/* eslint-disable-next-line react/jsx-key */}
                 />, <GridActionsCellItem
                     icon={ <CancelIcon/> }
                     label="Cancel"
