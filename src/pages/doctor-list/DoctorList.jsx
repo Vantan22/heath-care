@@ -7,35 +7,82 @@ import { Container, Typography } from "@mui/material";
 import StickyHeadTable from "../../component/BaseTable.jsx";
 import Footer from "../../component/Footer/Footer.jsx";
 import { getValueAPI } from "../../../api-service.js";
+import Paper from "@mui/material/Paper";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import TablePagination from "@mui/material/TablePagination";
 
+
+const columns = [{
+    id: 'fullName',
+    label: 'Name',
+    minWidth: 120
+}, {
+    id: 'email',
+    label: 'Email',
+    minWidth: 150
+}, {
+    id: 'phoneNumber',
+    label: 'phoneNumber',
+    minWidth: 80
+}, {
+    id: 'roleNames',
+    label: 'Role name',
+    minWidth: 130,
+}, {
+    id: 'age',
+    label: 'age',
+    minWidth: 50,
+}, {
+    id: 'gender',
+    label: 'gender',
+    minWidth: 80,
+}, {
+    id: 'dateOfBirth',
+    label: 'dateOfBirth',
+    minWidth: 50,
+}, {
+    id: 'height',
+    label: 'height',
+    minWidth: 50,
+}, {
+    id: 'weight',
+    label: 'weight',
+    minWidth: 50,
+}, {
+    id: 'address',
+    label: 'address',
+    minWidth: 200,
+},];
 const DoctorList = () => {
-    const [appointments, setAppointments] = useState([]);
-    const [values, setValues] = useState([])
-    const [appointmentDetail, setAppointmentDetail] = useState(null)
-    const userId = localStorage.getItem('id')
+    const [pecialization, setSecialization] = useState([])
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [users, setUsers] = useState([])
     const getData = async () => {
-        const speciallization = getValueAPI("")
-        const data = await HTTP.get(`/api/appointment/getByUserId/${userId}`)
-        const value = data.map((item, index) => {
-            return {
-                id: item.id,
-                index: index + 1,
-                doctor: item.doctorName,
-                name: item.patientName,
-                registrationDate: convertAppointmentTime(item.appointmentTime),
-                appointmentDate: convertTimeAndDate(item.appointmentTime),
-            }
-        })
-        setValues(data)
-        setAppointments(value)
+        const specializations = getValueAPI("/api/specialization/getAll")
+        const users = getValueAPI("/api/user/getAll")
+        const [specializationValues, userValues] = await Promise.all([specializations, users])
+        setSecialization( specializationValues)
+        setUsers(userValues.filter((item) => item.roleNames.includes("ROLE_DOCTOR")))
     }
     useEffect(() => {
         getData()
         return getData;
     }, []);
-    const onClickHideDetail = (data) => {
-        const handleDetailValue = values.find((item) => item.id === data)
-        setAppointmentDetail(handleDetailValue)
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+    const handleGetId = () => {
     }
     return (<Box sx={{
         display: "flex",
@@ -50,13 +97,51 @@ const DoctorList = () => {
                 <Box sx={{
                     marginTop: "20px",
                 }}>
-                    <Typography>danh sách lịch hẹn</Typography>
+                    <Typography>Danh sách bác sĩ theo khoa</Typography>
                     <Box sx={{
                         height: "1px",
                         width: "100%",
                         backgroundColor: "#000",
                     }}/>
-                    <StickyHeadTable rows={appointments} onClickHideDetail={onClickHideDetail}/>
+                    <Paper sx={{
+                        width: '100%',
+                        overflow: 'hidden'
+                    }}>
+                        <TableContainer component={Paper} sx={{ height: 440 }}>
+                            <Table sx={{
+                                minWidth: 200,
+                                color: "black"
+                            }} stickyHeader aria-label="sticky table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{
+                                            color: "white",
+                                            background: "#383838",
+                                            fontSize: "18px"
+                                        }}>Faculty name</TableCell>
+                                        <TableCell sx={{
+                                            color: "white",
+                                            background: "#383838",
+                                            fontSize: "18px"
+                                        }} align="right">ID</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {pecialization.map((row) => (
+                                        <TableRow
+                                            key={row.id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {row.specName}
+                                            </TableCell>
+                                            <TableCell align="right">{row.id}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
                     <Box sx={{
                         height: "1px",
                         width: "100%",
@@ -64,170 +149,54 @@ const DoctorList = () => {
                         margin: "40px 0"
                     }}/>
                 </Box>
-                {appointmentDetail && (<Box>
-                    <Typography>Chi tiết lịch hẹn</Typography>
-                    <Box sx={{
-                        width: "100%",
-                        minHeight: "500px",
-                        border: "1px solid #000",
-                        borderRadius: "10px",
-                        display: "flex",
-                    }}>
-                        <Box sx={{
-                            padding: "20px",
-                            display: "flex",
-                            minWidth: "31%",
-                            flexDirection: "column",
-                            rowGap: "12px",
-                            borderRight: "1px solid #000",
-                        }}>
-                            <Box sx={{
-                                width: "100%",
-                                height: "40px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}>
-                                <Typography>Doctor name : </Typography>
-                                <Typography>{appointmentDetail?.doctor}</Typography>
-                            </Box>
-                            <Box sx={{
-                                width: "100%",
-                                height: "40px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}>
-                                <Typography>Registration Date: </Typography>
-                                <Typography>{convertAppointmentTime(appointmentDetail?.appointmentTime)}</Typography>
-                            </Box>
-                            <Box sx={{
-                                width: "100%",
-                                height: "40px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}>
-                                <Typography>Appointment time: </Typography>
-                                <Typography>{convertTimeAndDate(appointmentDetail?.createdAt)}</Typography>
-                            </Box>
-                            <Box sx={{
-                                width: "100%",
-                                height: "40px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}>
-                                <Typography>Registration phone: </Typography>
-                                <Typography>{appointmentDetail?.phoneNumber}</Typography>
-                            </Box>
-                            <Box sx={{
-                                width: "100%",
-                                maxWidth: "350px",
-                                minHeight: "40px",
-                                display: "flex",
-                                alignItems: "flex-start",
-                            }}>
-                                <Typography>Purpose: </Typography>
-                                <Typography>{appointmentDetail?.purpose}</Typography>
-                            </Box>
-                        </Box>
-                        <Box sx={{
-                            padding: "20px",
-                            width: "100%",
-                        }}>
-                            <Box sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "40px",
-                            }}>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>Full name: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.fullName}</Typography>
-                                </Box>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>Date of Birth: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.dateOfBirth}</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "40px",
-                            }}>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>email: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.email}</Typography>
-                                </Box>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>phoneNumber: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.phoneNumber}</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "40px",
-                            }}>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>age: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.age}</Typography>
-                                </Box>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>gender: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.gender}</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "40px",
-                            }}>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>height: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.height}</Typography>
-                                </Box>
-                                <Box sx={{
-                                    width: "50%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>weight: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.weight}</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{
-                                display: "flex",
-                                width: "100%",
-                                height: "40px",
-                            }}>
-                                <Box sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                }}>
-                                    <Typography>address: </Typography>
-                                    <Typography>{appointmentDetail?.patient?.address}</Typography>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>)}
+                <Paper sx={{
+                    width: '100%',
+                    overflow: 'hidden'
+                }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead sx={{ backgroundColor: "#363432" }}>
+                                <TableRow>
+                                    {columns.map((column, index) => (<TableCell
+                                        key={index}
+                                        align={column.align}
+                                        style={{
+                                            minWidth: column.minWidth,
+                                            backgroundColor: "#363432",
+                                            color:"#fff"
+                                        }}
+                                    >
+                                        {column.label}
+                                    </TableCell>))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {users
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                        return (<TableRow hover role="checkbox" tabIndex={-1} key={index}
+                                                          onClick={() => handleGetId(row.id, row.roleNames, row.fullName)}>
+                                            {columns.map((column, index) => {
+                                                const value = row[column.id];
+                                                return (<TableCell key={index} align={column.align}>
+                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                </TableCell>);
+                                            })}
+                                        </TableRow>);
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={users.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
             </Container>
         </Box>
         <Footer/>
