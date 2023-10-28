@@ -24,33 +24,33 @@ import { message, Radio } from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
 import { useNavigate } from "react-router-dom";
-import dayjs from 'dayjs';
+import { getValueAPI } from "../../../../api-service.js";
+
 const ScheduleAnAppoinment = () => {
-    const [messageApi, contextHolder] = message.useMessage();
+    const [ messageApi, contextHolder ] = message.useMessage();
     const navigate = useNavigate();
     const checkLogin = localStorage.getItem('id')
-    if (!checkLogin) {
+    const currentEmail = localStorage.getItem('username')
+    if ( !checkLogin) {
         window.location.href = "/auth/login"
     }
-    const [value, setValue] = useState("Male");
-    const [specialization, setSpecialization] = useState([]);
-    const [examinationTime, setExaminationTime] = useState('');
-    const [departments, setDepartments] = useState([]);
+    const [ value, setValue ] = useState("Male");
+    const [ specialization, setSpecialization ] = useState([]);
+    const [ examinationTime, setExaminationTime ] = useState('');
+    const [ departments, setDepartments ] = useState([]);
     const patientId = localStorage.getItem('id')
 
 
     const datetimeFormat = 'YYYY-MM-DDTHH:mm:00';
 
+    const getData = async () => {
+        const data = await getValueAPI(`/api/specialization/getAll`)
+        setDepartments(data);
+    }
 
     useEffect(() => {
-        // Gọi API khi component được mount lần đầu
-        axios
-            .get("https://truculent-kick-production.up.railway.app/api/specialization/getAll")
-            .then((response) => {
-                setDepartments(response.data);
-                console.log('response.data', response.data)
-            })
-            .catch((error) => console.error(error));
+        getData()
+        return getData
     }, []);
 
     const onSubmit = (data) => {
@@ -63,7 +63,10 @@ const ScheduleAnAppoinment = () => {
         }).then((response) => {
             if (response.status === 200) {
                 messageApi.open({
-                    type: 'success', content: 'Resister in successfully!', duration: 1.5, onClose: () => {
+                    type: 'success',
+                    content: 'Resister in successfully!',
+                    duration: 1.5,
+                    onClose: () => {
                         navigate("/");
                     }
                 });
@@ -99,51 +102,61 @@ const ScheduleAnAppoinment = () => {
         .object({
             firstName: yup
                 .string()
-                .required("Please enter a user name")
+                .required("Please enter a first name")
                 .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
                 .min(2, "Enter more than 6 characters")
-                .trim(), LastName: yup
-                    .string()
-                    .required("Please enter a user name")
-                    .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
-                    .min(2, "Enter more than 6 characters")
-                    .trim(), email: yup
-                        .string()
-                        .required("Please enter a password")
-                        .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Password without accents")
-                        .min(6, "Enter more than 6 characters")
-                        .trim(), phoneNumber: yup
-                            .string()
-                            .required("Please enter a password")
-                            .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, "Password without accents")
-                            .min(6, "Enter more than 6 characters")
-                            .trim(),
+                .trim(),
+            LastName: yup
+                .string()
+                .required("Please enter a last name")
+                .matches(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/, "user name without accents")
+                .min(2, "Enter more than 6 characters")
+                .trim(),
+            phoneNumber: yup
+                .string()
+                .required("Please enter a phone number")
+                .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g, "Password without accents")
+                .min(6, "Enter more than 6 characters")
+                .trim(),
         })
         .required();
     const {
-        handleSubmit, formState: { errors }, register,
-    } = useForm({ mode: "all", resolver: yupResolver(schema) });
+        handleSubmit,
+        formState: { errors },
+        register,
+    } = useForm({
+        mode: "all",
+        resolver: yupResolver(schema)
+    });
 
     return (<Box>
-        <Header />
-        <Box sx={{
-            width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center",
+        <Header/>
+        <Box sx={ {
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             marginTop: "40px",
-        }}>
-            <Typography sx={{
-                color: "#26577C", fontSize: "40px", fontWeight: "600",
-            }}>
+        } }>
+            <Typography sx={ {
+                color: "#26577C",
+                fontSize: "40px",
+                fontWeight: "600",
+            } }>
                 ĐĂNG KÝ LỊCH KHÁM
             </Typography>
-            <Typography sx={{
-                color: "#26577C", fontSize: "25px", fontWeight: "400",
-            }}>
+            <Typography sx={ {
+                color: "#26577C",
+                fontSize: "25px",
+                fontWeight: "400",
+            } }>
                 REGISTER FOR EXAMINATION SCHEDULE
             </Typography>
         </Box>
         <Container>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Box sx={{
+            <form onSubmit={ handleSubmit(onSubmit) }>
+                <Box sx={ {
                     display: "flex",
                     flexDirection: "column",
                     marginTop: "20px",
@@ -152,8 +165,8 @@ const ScheduleAnAppoinment = () => {
                     border: "1px solid #B4B4B3",
                     width: "100%",
                     position: "relative",
-                }}>
-                    <Typography sx={{
+                } }>
+                    <Typography sx={ {
                         display: "flex",
                         height: "60px",
                         backgroundColor: "#f88848",
@@ -165,124 +178,159 @@ const ScheduleAnAppoinment = () => {
                         fontSize: "20px",
                         textTransform: "uppercase",
                         marginBottom: "40px",
-                    }}>Hồ sơ cá nhân</Typography>
+                    } }>Hồ sơ cá nhân</Typography>
                     <Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
-                        }}>
-                            <FormControl error={!!errors.firstName} sx={{ position: "relative", width: "45%" }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                        } }>
+                            <FormControl error={ !!errors.firstName } sx={ {
+                                position: "relative",
+                                width: "45%"
+                            } }>
                                 <InputLabel htmlFor="input-firstName">firstName</InputLabel>
                                 <OutlinedInput
-                                    sx={{
+                                    sx={ {
                                         paddingRight: "32px",
-                                    }}
+                                    } }
                                     id="input-firstName"
                                     label="Required"
                                     type="text"
-                                    {...register("firstName")}
+                                    { ...register("firstName") }
                                     name="firstName"
                                 />
-                                <FormHelperText sx={{ color: "red", height: "20px" }}
-                                    id="component-error-text">{errors.firstName && errors.firstName.message}</FormHelperText>
+                                <FormHelperText sx={ {
+                                    color: "red",
+                                    height: "20px"
+                                } }
+                                                id="component-error-text">{ errors.firstName && errors.firstName.message }</FormHelperText>
                             </FormControl>
-                            <FormControl error={!!errors.LastName} sx={{ position: "relative", width: "45%" }}>
+                            <FormControl error={ !!errors.LastName } sx={ {
+                                position: "relative",
+                                width: "45%"
+                            } }>
                                 <InputLabel htmlFor="input-phoneNumber">LastName</InputLabel>
                                 <OutlinedInput
-                                    sx={{
+                                    sx={ {
                                         paddingRight: "32px",
-                                    }}
+                                    } }
                                     id="input-LastName"
                                     label="LastName"
                                     type="text"
-                                    {...register("LastName")}
+                                    { ...register("LastName") }
                                     name="LastName"
                                 />
-                                <FormHelperText sx={{ color: "red", height: "20px" }}
-                                    id="component-error-text">{errors.LastName && errors.LastName.message}</FormHelperText>
+                                <FormHelperText sx={ {
+                                    color: "red",
+                                    height: "20px"
+                                } }
+                                                id="component-error-text">{ errors.LastName && errors.LastName.message }</FormHelperText>
                             </FormControl>
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between",
-                        }}>
-                            <FormControl error={!!errors.email} sx={{ position: "relative", width: "45%" }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                        } }>
+                            <FormControl disabled sx={ {
+                                position: "relative",
+                                width: "45%"
+                            } }>
                                 <InputLabel htmlFor="input-email">email</InputLabel>
                                 <OutlinedInput
-                                    sx={{
+                                    sx={ {
                                         paddingRight: "32px",
-                                    }}
+                                    } }
                                     id="input-email"
                                     label="Required"
+                                    value={currentEmail}
                                     type="email"
-                                    {...register("email")}
+                                    { ...register("email") }
                                     name="email"
                                 />
-                                <FormHelperText sx={{ color: "red", height: "20px" }}
-                                    id="component-error-text">{errors.email && errors.email.message}</FormHelperText>
                             </FormControl>
-                            <FormControl error={!!errors.phoneNumber} sx={{ position: "relative", width: "45%" }}>
+                            <FormControl error={ !!errors.phoneNumber } sx={ {
+                                position: "relative",
+                                width: "45%"
+                            } }>
                                 <InputLabel htmlFor="input-phoneNumber">phoneNumber</InputLabel>
                                 <OutlinedInput
-                                    sx={{
+                                    sx={ {
                                         paddingRight: "32px",
-                                    }}
+                                    } }
                                     id="input-phoneNumber"
                                     label="phoneNumber"
                                     type="text"
-                                    {...register("phoneNumber")}
+                                    { ...register("phoneNumber") }
                                     name="phoneNumber"
                                 />
-                                <FormHelperText sx={{ color: "red", height: "20px" }}
-                                    id="component-error-text">{errors.phoneNumber && errors.phoneNumber.message}</FormHelperText>
+                                <FormHelperText sx={ {
+                                    color: "red",
+                                    height: "20px"
+                                } }
+                                                id="component-error-text">{ errors.phoneNumber && errors.phoneNumber.message }</FormHelperText>
                             </FormControl>
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
-                        }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                            display: "flex",
+                            justifyContent: "space-between"
+                        } }>
                             <TextField
                                 label="Weight"
                                 id="outlined-start-adornment"
                                 type="number"
-                                sx={{ width: '45%' }}
-                                InputProps={{
+                                sx={ { width: '45%' } }
+                                InputProps={ {
                                     startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-                                }}
+                                } }
                             />
                             <TextField
                                 label="Height"
                                 id="outlined-start-adornment"
                                 type="number"
-                                sx={{ width: '45%' }}
-                                InputProps={{
+                                sx={ { width: '45%' } }
+                                InputProps={ {
                                     startAdornment: <InputAdornment position="start">cm</InputAdornment>,
-                                }}
+                                } }
                             />
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
-                        }}>
-                            <Box sx={{
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                            display: "flex",
+                            justifyContent: "space-between"
+                        } }>
+                            <Box sx={ {
                                 display: "flex",
                                 columnGap: "20px",
                                 alignItems: "center",
-                            }}>
+                            } }>
                                 <Box>Gender :</Box>
-                                <Radio.Group onChange={handleChangeGender} value={value} name="gender">
+                                <Radio.Group onChange={ handleChangeGender } value={ value } name="gender">
                                     <Radio value="male">Male</Radio>
                                     <Radio value="female">Female</Radio>
                                 </Radio.Group>
                             </Box>
-                            <Box sx={{ width: "45%" }}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker label="Choose your examination time" onChange={onChange} />
+                            <Box sx={ { width: "45%" } }>
+                                <LocalizationProvider dateAdapter={ AdapterDayjs }>
+                                    <DemoContainer components={ [ 'DateTimePicker' ] }>
+                                        <DateTimePicker label="Choose your examination time" onChange={ onChange }/>
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px", display: "flex", justifyContent: "space-between"
-                        }}>
-                            <FormControl sx={{ width: "45%" }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                            display: "flex",
+                            justifyContent: "space-between"
+                        } }>
+                            <FormControl sx={ { width: "45%" } }>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -290,72 +338,77 @@ const ScheduleAnAppoinment = () => {
                                     label="Danh Sách Khoa"
                                     defaultValue=""
                                     name="departmentId"
-                                    onChange={handleChangeDepartment}
+                                    onChange={ handleChangeDepartment }
                                 >
-                                    {departments.map((value) => <MenuItem key={value.id}
-                                        value={value.id}>{value.specName}</MenuItem>)}
+                                    { departments.map((value) => <MenuItem key={ value.id }
+                                                                           value={ value.id }>{ value.specName }</MenuItem>) }
                                 </Select>
                             </FormControl>
-                            <FormControl sx={{ width: "45%" }}>
+                            <FormControl sx={ { width: "45%" } }>
                                 <InputLabel id="demo-simple-select-label">Specialized doctor</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
                                     label="specialized doctor"
-                                    {...register("doctorId")}
+                                    { ...register("doctorId") }
                                     name="doctorId"
                                     defaultValue=""
-                                    onChange={handleChange}
+                                    onChange={ handleChange }
                                 >
-                                    {specialization.map((value) => <MenuItem key={value.id}
-                                        value={value.id}>{value.fullName}</MenuItem>)}
+                                    { specialization.map((value) => <MenuItem key={ value.id }
+                                                                              value={ value.id }>{ value.fullName }</MenuItem>) }
                                 </Select>
                             </FormControl>
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px",
-                        }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                        } }>
                         </Box>
-                        <Box sx={{
-                            width: "100%", padding: "10px 20px",
-                        }}>
-                            <FormControl sx={{ position: "relative", width: "100%" }}>
+                        <Box sx={ {
+                            width: "100%",
+                            padding: "10px 20px",
+                        } }>
+                            <FormControl sx={ {
+                                position: "relative",
+                                width: "100%"
+                            } }>
                                 <InputLabel htmlFor="input-purpose">purpose</InputLabel>
                                 <OutlinedInput
-                                    sx={{
+                                    sx={ {
                                         paddingRight: "32px",
-                                    }}
+                                    } }
                                     id="input-purpose"
                                     label="purpose"
                                     type="text"
                                     multiline
-                                    rows={4}
-                                    {...register("purpose")}
+                                    rows={ 4 }
+                                    { ...register("purpose") }
                                     name="purpose"
                                 />
                             </FormControl>
                         </Box>
-                        <Box sx={{
+                        <Box sx={ {
                             width: "100%",
                             display: "flex",
                             justifyContent: "flex-end",
-                        }}>
-                            <Button type="submit" sx={{
+                        } }>
+                            <Button type="submit" sx={ {
                                 padding: "14px",
                                 margin: "10px 20px 20px 20px",
                                 width: "300px",
                                 backgroundColor: "#f8792e",
-                            }} variant="contained" size="large">Đăng ký</Button>
+                            } } variant="contained" size="large">Đăng ký</Button>
                         </Box>
                     </Box>
                 </Box>
             </form>
-            {contextHolder}
+            { contextHolder }
         </Container>
-        <Box sx={{
+        <Box sx={ {
             height: "40px",
-        }}></Box>
-        <Footer />
+        } }></Box>
+        <Footer/>
     </Box>)
 }
 export default ScheduleAnAppoinment
