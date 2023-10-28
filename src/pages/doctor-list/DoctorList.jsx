@@ -1,10 +1,7 @@
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import HTTP from "../../../axios-config.js";
-import { convertAppointmentTime, convertTimeAndDate } from "../../constant/convert-time.js";
 import Header from "../../component/header/Header.jsx";
 import { Container, Typography } from "@mui/material";
-import StickyHeadTable from "../../component/BaseTable.jsx";
 import Footer from "../../component/Footer/Footer.jsx";
 import { getValueAPI } from "../../../api-service.js";
 import Paper from "@mui/material/Paper";
@@ -17,58 +14,40 @@ import TableBody from "@mui/material/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 
 
-const columns = [{
-    id: 'fullName',
-    label: 'Name',
-    minWidth: 120
-}, {
-    id: 'email',
-    label: 'Email',
-    minWidth: 150
-}, {
-    id: 'phoneNumber',
-    label: 'phoneNumber',
-    minWidth: 80
-}, {
-    id: 'roleNames',
-    label: 'Role name',
-    minWidth: 130,
-}, {
-    id: 'age',
-    label: 'age',
-    minWidth: 50,
-}, {
-    id: 'gender',
-    label: 'gender',
-    minWidth: 80,
-}, {
-    id: 'dateOfBirth',
-    label: 'dateOfBirth',
-    minWidth: 50,
-}, {
-    id: 'height',
-    label: 'height',
-    minWidth: 50,
-}, {
-    id: 'weight',
-    label: 'weight',
-    minWidth: 50,
-}, {
-    id: 'address',
-    label: 'address',
-    minWidth: 200,
-},];
+const columns = [
+    {
+        id: 'fullName',
+        label: 'Name',
+        minWidth: 120
+    },
+    {
+        id: 'phoneNumber',
+        label: 'Phone number',
+        minWidth: 80
+    },
+    {
+        id: 'age',
+        label: 'Age',
+        minWidth: 50,
+    },
+    {
+        id: 'gender',
+        label: 'Gender',
+        minWidth: 80,
+    },
+    {
+        id: 'specName',
+        label: 'Spec name',
+        minWidth: 200,
+    } ];
 const DoctorList = () => {
-    const [pecialization, setSecialization] = useState([])
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [users, setUsers] = useState([])
+    const [ pecialization, setSecialization ] = useState([])
+    const [ page, setPage ] = useState(0);
+    const [ rowsPerPage, setRowsPerPage ] = useState(10);
+    const [ users, setUsers ] = useState([])
     const getData = async () => {
-        const specializations = getValueAPI("/api/specialization/getAll")
-        const users = getValueAPI("/api/user/getAll")
-        const [specializationValues, userValues] = await Promise.all([specializations, users])
-        setSecialization( specializationValues)
-        setUsers(userValues.filter((item) => item.roleNames.includes("ROLE_DOCTOR")))
+        const specializations = await getValueAPI("/api/specialization/getAll")
+        setSecialization(specializations)
     }
     useEffect(() => {
         getData()
@@ -82,119 +61,121 @@ const DoctorList = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-    const handleGetId = () => {
+    const handleGetId = async (id) => {
+        const data = await getValueAPI(`/api/doctor/getBySpecId/${ id }`)
+        setUsers(data)
     }
-    return (<Box sx={{
+    return (<Box sx={ {
         display: "flex",
         flexDirection: "column",
         height: "100vh",
-    }}>
+    } }>
         <Header/>
-        <Box sx={{
+        <Box sx={ {
             flex: "1 1 0"
-        }}>
+        } }>
             <Container>
-                <Box sx={{
+                <Box sx={ {
                     marginTop: "20px",
-                }}>
+                } }>
                     <Typography>Danh sách bác sĩ theo khoa</Typography>
-                    <Box sx={{
+                    <Box sx={ {
                         height: "1px",
                         width: "100%",
                         backgroundColor: "#000",
-                    }}/>
-                    <Paper sx={{
+                    } }/>
+                    <Paper sx={ {
                         width: '100%',
                         overflow: 'hidden'
-                    }}>
-                        <TableContainer component={Paper} sx={{ height: 440 }}>
-                            <Table sx={{
+                    } }>
+                        <TableContainer component={ Paper } sx={ { height: 440 } }>
+                            <Table sx={ {
                                 minWidth: 200,
                                 color: "black"
-                            }} stickyHeader aria-label="sticky table">
+                            } } stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell sx={{
+                                        <TableCell sx={ {
                                             color: "white",
                                             background: "#383838",
                                             fontSize: "18px"
-                                        }}>Faculty name</TableCell>
-                                        <TableCell sx={{
+                                        } }>Faculty name</TableCell>
+                                        <TableCell sx={ {
                                             color: "white",
                                             background: "#383838",
                                             fontSize: "18px"
-                                        }} align="right">ID</TableCell>
+                                        } } align="right">ID</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {pecialization.map((row) => (
+                                    { pecialization.map((row) => (
                                         <TableRow
-                                            key={row.id}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            key={ row.id }
+                                            sx={ { '&:last-child td, &:last-child th': { border: 0 } } }
+                                            onClick={ () => handleGetId(row.id) }
                                         >
                                             <TableCell component="th" scope="row">
-                                                {row.specName}
+                                                { row.specName }
                                             </TableCell>
-                                            <TableCell align="right">{row.id}</TableCell>
+                                            <TableCell align="right">{ row.id }</TableCell>
                                         </TableRow>
-                                    ))}
+                                    )) }
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </Paper>
-                    <Box sx={{
+                    <Box sx={ {
                         height: "1px",
                         width: "100%",
                         backgroundColor: "#000",
                         margin: "40px 0"
-                    }}/>
+                    } }/>
                 </Box>
-                <Paper sx={{
+                <Paper sx={ {
                     width: '100%',
                     overflow: 'hidden'
-                }}>
-                    <TableContainer sx={{ maxHeight: 440 }}>
+                } }>
+                    <TableContainer sx={ { maxHeight: 440 } }>
                         <Table stickyHeader aria-label="sticky table">
-                            <TableHead sx={{ backgroundColor: "#363432" }}>
+                            <TableHead sx={ { backgroundColor: "#363432" } }>
                                 <TableRow>
-                                    {columns.map((column, index) => (<TableCell
-                                        key={index}
-                                        align={column.align}
-                                        style={{
+                                    { columns.map((column, index) => (<TableCell
+                                        key={ index }
+                                        align={ column.align }
+                                        style={ {
                                             minWidth: column.minWidth,
                                             backgroundColor: "#363432",
-                                            color:"#fff"
-                                        }}
+                                            color: "#fff"
+                                        } }
                                     >
-                                        {column.label}
-                                    </TableCell>))}
+                                        { column.label }
+                                    </TableCell>)) }
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users
+                                { users
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                        return (<TableRow hover role="checkbox" tabIndex={-1} key={index}
-                                                          onClick={() => handleGetId(row.id, row.roleNames, row.fullName)}>
-                                            {columns.map((column, index) => {
+                                        return (<TableRow hover role="checkbox" tabIndex={ -1 } key={ index }>
+                                            { columns.map((column, index) => {
                                                 const value = row[column.id];
-                                                return (<TableCell key={index} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
+                                                return (<TableCell key={ index } align={ column.align }>
+                                                    { column.format && typeof value === 'number' ? column.format(value) : value }
                                                 </TableCell>);
-                                            })}
+                                            }) }
                                         </TableRow>);
-                                    })}
+                                    }) }
                             </TableBody>
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25, 100]}
+                        rowsPerPageOptions={ [ 10, 25, 100 ] }
                         component="div"
-                        count={users.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        count={ users.length }
+                        rowsPerPage={ rowsPerPage }
+                        page={ page }
+                        onPageChange={ handleChangePage }
+                        onRowsPerPageChange={ handleChangeRowsPerPage }
                     />
                 </Paper>
             </Container>
