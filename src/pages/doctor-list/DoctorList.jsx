@@ -78,7 +78,6 @@ const DoctorList = () => {
                 <Box sx={ {
                     marginTop: "20px",
                 } }>
-                    <Typography>Danh sách bác sĩ theo khoa</Typography>
                     <Box sx={ {
                         height: "1px",
                         width: "100%",
