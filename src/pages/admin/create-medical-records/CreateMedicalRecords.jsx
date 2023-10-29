@@ -64,9 +64,6 @@ const CreateMedicalRecords = () => {
             "phoneNumber": valueParent.phoneNumber,
             medicalHistory: "",
             "files": imagesFile,
-            testResult: {
-                data: [ value ],
-            },
             medicationDetails: [ rows ], ...value
         })
     };
@@ -126,9 +123,9 @@ const CreateMedicalRecords = () => {
 
     const initialRows = [ {
         id: 1,
-        tenThuoc: "thuốc A",
-        tanSuat: '2 ngày',
-        thoiGian: '1 Năm'
+        medicineName: "thuốc A",
+        frequency: '2 ngày',
+        duration: '1 Năm'
     } ];
     const [ rows, setRows ] = useState(initialRows);
     const [ rowModesModel, setRowModesModel ] = useState({});
@@ -186,19 +183,19 @@ const CreateMedicalRecords = () => {
     };
 
     const columns = [ {
-        field: 'tenThuoc',
+        field: 'medicineName',
         headerName: 'Tên Thuốc',
         width: 300,
         editable: true
     }, {
-        field: 'tanSuat',
+        field: 'frequency',
         headerName: 'Tần xuất sử dụng',
         width: 300,
         align: 'left',
         headerAlign: 'left',
         editable: true,
     }, {
-        field: 'thoiGian',
+        field: 'duration',
         headerName: 'Thời gian sử dụng',
         width: 300,
         editable: true,
