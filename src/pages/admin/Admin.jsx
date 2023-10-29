@@ -19,13 +19,15 @@ const Admin = () => {
                         width: "120px",
                         backgroundColor: "#363432",
                         minHeight: "100vh",
-                        maxWidth: "140px"
+                        maxWidth: "140px",
+                        position:"fixed",
                     }}>
                         <NavTabs />
                     </Box>
                     
                     <Box sx={{
-                        marginTop:"20px",
+                        marginTop: "20px",
+                        marginLeft:"120px"
                     }}><Outlet /></Box>
                 </Box>
             </Container>
