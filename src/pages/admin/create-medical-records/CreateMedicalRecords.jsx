@@ -27,8 +27,10 @@ import {
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
 import HTTP from "../../../../axios-config.js";
+import {message} from "antd";
 
 const CreateMedicalRecords = () => {
+    const [messageApi, contextHolder] = message.useMessage();
     const checkLogin = localStorage.getItem('id')
     if (!checkLogin) {
         window.location.href = "/auth/login"
@@ -71,7 +73,20 @@ const CreateMedicalRecords = () => {
             medicalHistory: "",
             "files": imagesFile,
             medicationDetails:  rowsResult , ...value
+        }).then(() => {
+            messageApi.open({
+                type: "success",
+                content: "Chỉnh sửa thành công!",
+                duration: 1.5,
+            });
         })
+            .catch(()=> {
+                messageApi.open({
+                    type: "error",
+                    content: "Chỉnh sửa thất bại!",
+                    duration: 1.5,
+                });
+            })
     };
     const {
         handleSubmit,
@@ -545,6 +560,7 @@ const CreateMedicalRecords = () => {
                     </Box>
                 </Box>
             </form>
+            {contextHolder}
         </Container>
         <Box sx={{
             height: "40px",
