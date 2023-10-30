@@ -16,6 +16,7 @@ import ManagerUser from "./pages/admin/manager-user/ManagerUser.jsx";
 import DoctorList from "./pages/doctor-list/DoctorList.jsx";
 import Doctor from "./pages/doctor/Doctor.jsx";
 import AppointmentListForDoctor from "./pages/doctor/component/AppointmentListForDoctor.jsx";
+import ScheduleAnAppoinmentForId from "./pages/component/ScheduleAnAppoinment/ScheduleAnAppoinmentForId.jsx";
 
 function App() {
     return (<Routes>
@@ -27,7 +28,7 @@ function App() {
             <HomePage/>
         </PrivateRouter>}/>
         <Route path="/schedule-an-appointment" element={<ScheduleAnAppoinment/>}/>
-        <Route path="/schedule-an-appointment/:id" element={<ScheduleAnAppoinment/>}/>
+        <Route path="/schedule-an-appointment/:id" element={<ScheduleAnAppoinmentForId/>}/>
         <Route path="/contact" element={<ContactForm/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/appointment-list" element={<AppointmentList/>}/>

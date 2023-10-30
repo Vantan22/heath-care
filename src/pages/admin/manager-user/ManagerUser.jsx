@@ -7,9 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import HTTP from "../../../../axios-config.js";
-import { Button, Container, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {Button, Container, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Typography} from "@mui/material";
 
 
 const columns = [{
@@ -62,9 +62,10 @@ const ManagerUser = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isDisibled, setIsDisabled] = useState(false);
     const [isRole, setIsRole] = useState(false)
+    const [workExperience, setWorkExperience] = useState("");
+    const [graduateAt, setGraduateAt] = useState("");
     const getUsers = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/user/getAll')
-        console.log("data", data)
         setUsers(data)
     }
     const getAllFaculty = async () => {
@@ -85,13 +86,9 @@ const ManagerUser = () => {
         setPage(0);
     };
     const handleGetId = (id, roleNames, fullName) => {
-        const find = roleNames.find((role) => role === "ROLE_DOCTOR")
-        setIsRole(find)
-        const roleResult = roleNames.join(",")
-        console.log("id", id)
         setCurrentUser({
             id: id,
-            roleNames: roleResult,
+            roleNames: roleNames,
             fullName: fullName
         })
     }
@@ -104,7 +101,9 @@ const ManagerUser = () => {
     const handleChangeRole = async () => {
         await HTTP.post('https://truculent-kick-production.up.railway.app/admin/updateUserToDoctor', {
             "userId": currentUser.id,
-            "specld": departmentId
+            "specld": departmentId,
+            workExperience: workExperience,
+            graduateAt: graduateAt
         })
     }
     return (
@@ -192,9 +191,9 @@ const ManagerUser = () => {
                         padding: "10px 20px",
                     }}>
                         <Box sx={{
-                            width: "25%",
+                            width: "15%",
                         }}>User Name : {currentUser?.fullName}</Box>
-                        <Box sx={{ width: "25%" }}>
+                        <Box sx={{ width: "15%" }}>
                             <FormControl sx={{ width: "100%" }}>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
@@ -212,9 +211,41 @@ const ManagerUser = () => {
                         </Box>
                         <Box sx={{
                             width: "25%",
+                            display: "flex",
+                            columnGap:"10px"
+                        }}>
+                            <Typography>Work experience</Typography>
+                            <OutlinedInput
+                                sx={{
+                                    paddingRight: "32px",
+                                }}
+                                type="text"
+                                name="workExperience"
+                                value={workExperience}
+                                onChange={(e) => setWorkExperience(e.target.value)}
+                            />
+                        </Box>
+                        <Box sx={{
+                            width: "25%",
+                            display: "flex",
+                            columnGap:"10px"
+                        }}>
+                            <Typography>Graduate at</Typography>
+                            <OutlinedInput
+                                sx={{
+                                    paddingRight: "32px",
+                                }}
+                                type="text"
+                                name="graduateAt"
+                                value={graduateAt}
+                                onChange={(e) => setGraduateAt(e.target.value)}
+                            />
+                        </Box>
+                        <Box sx={{
+                            width: "15%",
                         }}>Role : {currentUser?.roleNames}</Box>
                         <Button sx={{
-                            minWidth: "200px",
+                            minWidth: "170px",
                             height: "50px",
                             alignItems: "left",
                             backgroundColor: "#363432",
