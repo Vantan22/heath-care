@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import {useNavigate} from "react-router-dom";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import HomeIcon from "@mui/icons-material/Home.js";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 function samePageLinkNavigation(event) {
     if (
@@ -57,6 +58,11 @@ export default function NavTabsForDoctor() {
                 <LinkTab label="Medical Records" href="/doctor/create-medical-records" sx={{
                     color: "#ffff"
                 }} icon={<AssignmentIcon sx={{
+                    color: "#ffff"
+                }}/>}/>
+                <LinkTab label="Appointment list" href="/doctor/appointment-list" sx={{
+                    color: "#ffff"
+                }} icon={<ReceiptLongIcon sx={{
                     color: "#ffff"
                 }}/>}/>
                 <LinkTab label="Home" href="/" sx={{

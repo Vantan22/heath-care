@@ -23,10 +23,11 @@ import { useEffect, useState } from "react";
 import { message, Radio } from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { getValueAPI } from "../../../../api-service.js";
 
 const ScheduleAnAppoinment = () => {
+    const { id } = useParams();
     const [ messageApi, contextHolder ] = message.useMessage();
     const navigate = useNavigate();
     const checkLogin = localStorage.getItem('id')
