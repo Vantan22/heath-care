@@ -49,7 +49,7 @@ const Header = () => {
         navigate('/admin/faculty-management')
     }
     const handleNavigateDoctor = () => {
-        navigate('/doctor')
+        navigate('/doctor/create-medical-records')
     }
     return (
         <Box sx={ {

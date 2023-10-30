@@ -26,8 +26,8 @@ import {
     GridToolbarContainer,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
-import HTTP from "../../../../axios-config.js";
 import {message} from "antd";
+import HTTP from "../../../../axios-config.js";
 
 const CreateMedicalRecords = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -40,6 +40,11 @@ const CreateMedicalRecords = () => {
     const [valueParent, setValueParent] = useState({});
     const [imagesFile, setImagesFiles] = useState([]);
     const [isEditRow, setIsEditRow] = useState(false);
+    const [biochemicalTests, setBiochemicalTests] = useState("");
+    const [imageAnalysation, setImageAnalysation] = useState("");
+    const [currentCondition, setCurrentCondition] = useState("");
+    const [diseaseProgression, setDiseaseProgression] = useState("");
+    const [notesFromDoctor, setNotesFromDoctor] = useState("");
 
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
@@ -66,21 +71,49 @@ const CreateMedicalRecords = () => {
             frequency: value.frequency,
             duration: value.duration,
         }))
-        await HTTP.post(`/api/medicalRecord/create`,{
+        console.log("tesst : ",
+            {
+                "patientId": valueParent.id,
+                "doctorId": doctorId,
+                "phoneNumber": valueParent.phoneNumber,
+                medicalHistory: "",
+                "files": imagesFile,
+                medicationDetails: rowsResult, ...value
+            }
+        )
+        await HTTP.post(`/api/medicalRecord/create`, {
             "patientId": valueParent.id,
             "doctorId": doctorId,
             "phoneNumber": valueParent.phoneNumber,
             medicalHistory: "",
             "files": imagesFile,
-            medicationDetails:  rowsResult , ...value
+            medicationDetails: rowsResult,
+            biochemicalTests: biochemicalTests,
+            imageAnalysation: imageAnalysation,
+            currentCondition: currentCondition,
+            diseaseProgression: diseaseProgression,
+            notesFromDoctor: notesFromDoctor
         }).then(() => {
             messageApi.open({
                 type: "success",
                 content: "Tạo thành công!",
                 duration: 1.5,
+                onClose: () => {
+                    setBiochemicalTests("");
+                    setImageAnalysation("");
+                    setCurrentCondition("");
+                    setDiseaseProgression("");
+                    setNotesFromDoctor("");
+                    setRows({
+                        id: "",
+                        medicineName: "",
+                        frequency: '',
+                        duration: ''
+                    })
+                }
             });
         })
-            .catch(()=> {
+            .catch(() => {
                 messageApi.open({
                     type: "error",
                     content: "Thất bại!",
@@ -143,10 +176,10 @@ const CreateMedicalRecords = () => {
     }
 
     const initialRows = [{
-        id: 1,
-        medicineName: "thuốc A",
-        frequency: '2 ngày',
-        duration: '1 Năm'
+        id: "",
+        medicineName: "",
+        frequency: '',
+        duration: ''
     }];
     const [rows, setRows] = useState(initialRows);
     const [rowModesModel, setRowModesModel] = useState({});
@@ -465,8 +498,9 @@ const CreateMedicalRecords = () => {
                             rowGap: "10px",
                         }}>
                             <Typography> Xét nghiệm hoá sinh :</Typography>
-                            <OutlinedInput name="biochemicalTests" {...register("biochemicalTests")} multiline
-                                           rows={4}/>
+                            <OutlinedInput name="biochemicalTests"
+                                           value={biochemicalTests} {...register("biochemicalTests")} multiline
+                                           rows={4} onChange={(e) => setBiochemicalTests(e.target.value)}/>
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -476,8 +510,9 @@ const CreateMedicalRecords = () => {
                             rowGap: "10px",
                         }}>
                             <Typography> Chuẩn đoán hình ảnh :</Typography>
-                            <OutlinedInput name="imageAnalysation" {...register("imageAnalysation")} multiline
-                                           rows={4}/>
+                            <OutlinedInput name="imageAnalysation"
+                                           value={imageAnalysation} {...register("imageAnalysation")} multiline
+                                           rows={4} onChange={(e) => setImageAnalysation(e.target.value)}/>
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -487,8 +522,9 @@ const CreateMedicalRecords = () => {
                             rowGap: "10px",
                         }}>
                             <Typography> Tình trạng hiện tại :</Typography>
-                            <OutlinedInput name="currentCondition" {...register("currentCondition")} multiline
-                                           rows={4}/>
+                            <OutlinedInput name="currentCondition"
+                                           value={currentCondition} {...register("currentCondition")} multiline
+                                           rows={4} onChange={(e) => setCurrentCondition(e.target.value)}/>
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -498,8 +534,9 @@ const CreateMedicalRecords = () => {
                             rowGap: "10px",
                         }}>
                             <Typography> Tiến triển của bệnh :</Typography>
-                            <OutlinedInput name="diseaseProgression" {...register("diseaseProgression")} multiline
-                                           rows={4}/>
+                            <OutlinedInput name="diseaseProgression"
+                                           value={diseaseProgression} {...register("diseaseProgression")} multiline
+                                           rows={4} onChange={(e) => setDiseaseProgression(e.target.value)}/>
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -509,8 +546,9 @@ const CreateMedicalRecords = () => {
                             rowGap: "10px",
                         }}>
                             <Typography> Ghi chú từ bác sĩ :</Typography>
-                            <OutlinedInput name="notesFromDoctor" {...register("notesFromDoctor")} multiline
-                                           rows={4}/>
+                            <OutlinedInput name="notesFromDoctor"
+                                           value={notesFromDoctor} {...register("notesFromDoctor")} multiline
+                                           rows={4} onChange={(e) => setNotesFromDoctor(e.target.value)}/>
                         </Box>
                         <Box>
                             <Box

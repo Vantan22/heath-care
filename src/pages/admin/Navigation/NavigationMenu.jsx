@@ -59,11 +59,6 @@ export default function NavTabs() {
         }} icon={<ReceiptLongIcon sx={{
           color: "#ffff"
         }} />} />
-        <LinkTab label="Medical Records" href="/admin/create-medical-records" sx={{
-          color: "#ffff"
-        }} icon={<AssignmentIcon sx={{
-          color: "#ffff"
-        }} />} />
         <LinkTab label="User Management" href="/admin/user-management" sx={{
           color: "#ffff"
         }} icon={<AdminPanelSettingsIcon sx={{
