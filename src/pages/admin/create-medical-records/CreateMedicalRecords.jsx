@@ -486,7 +486,7 @@ const CreateMedicalRecords = () => {
                             flexDirection: "column",
                             rowGap: "10px",
                         }}>
-                            <Typography> Current condition :</Typography>
+                            <Typography> Tình trạng hiện tại :</Typography>
                             <OutlinedInput name="currentCondition" {...register("currentCondition")} multiline
                                            rows={4}/>
                         </Box>
@@ -497,7 +497,7 @@ const CreateMedicalRecords = () => {
                             flexDirection: "column",
                             rowGap: "10px",
                         }}>
-                            <Typography> Disease progression :</Typography>
+                            <Typography> Tiến triển của bệnh :</Typography>
                             <OutlinedInput name="diseaseProgression" {...register("diseaseProgression")} multiline
                                            rows={4}/>
                         </Box>
@@ -508,7 +508,7 @@ const CreateMedicalRecords = () => {
                             flexDirection: "column",
                             rowGap: "10px",
                         }}>
-                            <Typography> Notes from doctor :</Typography>
+                            <Typography> Ghi chú từ bác sĩ :</Typography>
                             <OutlinedInput name="notesFromDoctor" {...register("notesFromDoctor")} multiline
                                            rows={4}/>
                         </Box>
