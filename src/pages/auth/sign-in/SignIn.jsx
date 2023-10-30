@@ -38,6 +38,7 @@ const SignIn = () => {
               localStorage.setItem('username',response.data.username)
               localStorage.setItem('id',response.data.id)
               localStorage.setItem('fullName',response.data.fullName)
+              localStorage.setItem('role',response.data.role)
               navigate("/");
             }
           });
@@ -49,7 +50,7 @@ const SignIn = () => {
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         messageApi.open({
           type: 'error',
           content: "Sai email hoặc mật khẩu!",

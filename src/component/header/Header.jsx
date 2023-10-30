@@ -13,16 +13,25 @@ const Header = () => {
     const [ dataUser, setDataUser ] = useState({});
     const patientId = localStorage.getItem("id");
     const [ isAdmin, setIsAdmin ] = useState(false);
+    const [ isDoctor, setIsDoctor ] = useState(false);
+    const getRole = localStorage.getItem('role');
+    const handleChangeRole = () => {
+        if (getRole === 'ROLE_DOCTOR') {
+            setIsDoctor(true)
+        }
+        if (getRole === 'ROLE_ADMIN') {
+            setIsAdmin(true)
+        }
+    }
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
+        handleChangeRole()
         axios
             .get(
                 `https://truculent-kick-production.up.railway.app/api/user/getByUserId/${ patientId }`
             )
             .then((response) => {
                 setDataUser(response.data);
-                const find = response.data.roleNames.find((role) => role === "ROLE_DOCTOR")
-                find && setIsAdmin(true)
             })
             .catch((error) => console.error(error));
     }, []);
@@ -38,6 +47,9 @@ const Header = () => {
     }
     const handleNavigateAdmin = () => {
         navigate('/admin/faculty-management')
+    }
+    const handleNavigateDoctor = () => {
+        navigate('/doctor')
     }
     return (
         <Box sx={ {
@@ -110,6 +122,7 @@ const Header = () => {
                                             width: "150px",
                                         } } onClick={ handleNavigateProfile }>Profile</MenuItem>
                                         { isAdmin && <MenuItem onClick={ handleNavigateAdmin }>Admin</MenuItem> }
+                                        { isDoctor && <MenuItem onClick={ handleNavigateDoctor }>Doctor</MenuItem> }
                                         <MenuItem onClick={ handleLogout }>Logout</MenuItem>
                                     </Menu>
                                 </>) }

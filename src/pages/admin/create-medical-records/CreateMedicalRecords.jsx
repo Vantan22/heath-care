@@ -76,14 +76,14 @@ const CreateMedicalRecords = () => {
         }).then(() => {
             messageApi.open({
                 type: "success",
-                content: "Chỉnh sửa thành công!",
+                content: "Tạo thành công!",
                 duration: 1.5,
             });
         })
             .catch(()=> {
                 messageApi.open({
                     type: "error",
-                    content: "Chỉnh sửa thất bại!",
+                    content: "Thất bại!",
                     duration: 1.5,
                 });
             })
