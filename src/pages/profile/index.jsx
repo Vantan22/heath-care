@@ -28,21 +28,21 @@ export default function Profile() {
     const [settings, setSettings] = useState(false);
     const [dataUser, setDataUser] = useState({});
     const userId = localStorage.getItem("id");
-    const [isSuccess, setIsSuccess] =useState(true);
+    const [isSuccess, setIsSuccess] = useState(true);
     const [valueGender, setValueGender] = useState(dataUser.gender);
     const [checkChange, setCheckChange] = useState(true);
     useEffect(() => {
         // Gọi API khi component được mount lần đầu
         axios
-          .get(
-            `https://truculent-kick-production.up.railway.app/api/user/getByUserId/${userId}`
-          )
-          .then((response) => {
-            setDataUser(response.data);
-          })
-          .catch((error) => console.error(error));
+            .get(
+                `https://truculent-kick-production.up.railway.app/api/user/getByUserId/${userId}`
+            )
+            .then((response) => {
+                setDataUser(response.data);
+            })
+            .catch((error) => console.error(error));
     }, []);
-console.log("data user",dataUser);
+    console.log("data user", dataUser);
     const handleChangeAvatar = async (e) => {
         const avatar = e.target.files[0];
         setSelectAvatar(avatar);
@@ -83,38 +83,38 @@ console.log("data user",dataUser);
 
     const onSubmit = (data) => {
         axios
-          .post(
-            `https://truculent-kick-production.up.railway.app/api/user/update/${userId}`,
-            {
-              image: avatarBase,
-              fullName: data.fullName,
-              email: data.email,
-              age: data.age,
-              phoneNumber: data.phoneNumber,
-              weight: data.weight,
-              height: data.height,
-              gender: valueGender,
-              address: data.address,
-              dateOfBirth: data.dateOfBirth,
-            }
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              setDataUser(response.data);
-              setCheckChange(true);
-              messageApi.open({
-                type: "success",
-                content: "Chỉnh sửa thành công!",
-                duration: 1.5,
-                onClose: () => {
-                  reset();
-                  setSettings(false);
-                },
-              });
-            } else {
-              console.log("Error posting data!");
-            }
-          });
+            .post(
+                `https://truculent-kick-production.up.railway.app/api/user/update/${userId}`,
+                {
+                    image: avatarBase,
+                    fullName: data.fullName,
+                    email: data.email,
+                    age: data.age,
+                    phoneNumber: data.phoneNumber,
+                    weight: data.weight,
+                    height: data.height,
+                    gender: valueGender,
+                    address: data.address,
+                    dateOfBirth: data.dateOfBirth,
+                }
+            )
+            .then((response) => {
+                if (response.status === 200) {
+                    setDataUser(response.data);
+                    setCheckChange(true);
+                    messageApi.open({
+                        type: "success",
+                        content: "Chỉnh sửa thành công!",
+                        duration: 1.5,
+                        onClose: () => {
+                            reset();
+                            setSettings(false);
+                        },
+                    });
+                } else {
+                    console.log("Error posting data!");
+                }
+            });
     };
     const schema = yup
         .object({
@@ -134,13 +134,6 @@ console.log("data user",dataUser);
                 .string()
                 .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "email without accents")
                 .min(6, "Enter more than 6 characters")
-                .trim(),
-            phoneNumber: yup
-                .string()
-                .matches(
-                    /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-                    "Phone number without accents"
-                )
                 .trim(),
         })
         .required();
@@ -459,7 +452,7 @@ console.log("data user",dataUser);
                                                 >
                                                     {dataUser.phoneNumber
                                                         ? dataUser.phoneNumber
-                                                        : "Chua cap nhat sdt"}
+                                                        : "Chưa cập nhật số điện thoại"}
                                                 </Typography>
                                             </>
                                         )}
@@ -505,7 +498,7 @@ console.log("data user",dataUser);
                                             >
                                                 {dataUser.weight
                                                     ? dataUser.weight
-                                                    : "Chua cap nhat can nang"}
+                                                    : "Chưa cập nhật cân nặng"}
                                             </Typography>
                                         </Box>
                                     )}
@@ -540,7 +533,7 @@ console.log("data user",dataUser);
                                             >
                                                 {dataUser.height
                                                     ? dataUser.height
-                                                    : "Chua cap nhat chieu cao"}
+                                                    : "Chưa cập nhật chiều cao"}
                                             </Typography>
                                         </Box>
                                     )}
@@ -596,7 +589,7 @@ console.log("data user",dataUser);
                                                 >
                                                     {dataUser.dateOfBirth
                                                         ? dataUser.dateOfBirth
-                                                        : "Chua cap nhat ngay sinh"}
+                                                        : "Chưa cập nhật ngày sinh"}
                                                 </Typography>
                                             </Box>
                                         )}
@@ -643,7 +636,7 @@ console.log("data user",dataUser);
                                                 >
                                                     {dataUser.address
                                                         ? dataUser.address
-                                                        : "Chua cap nhat dia chi"}
+                                                        : "Chưa cập nhật địa chỉ"}
                                                 </Typography>
                                             </Box>
                                         )}
@@ -707,7 +700,7 @@ console.log("data user",dataUser);
                                                 >
                                                     {dataUser.gender
                                                         ? dataUser.gender
-                                                        : "Chua cap nhat gioi tinh"}
+                                                        : "Chưa cập nhật giới tính"}
                                                 </Typography>
                                             </Box>
                                         )}

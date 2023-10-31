@@ -12,16 +12,16 @@ import {
     Typography
 } from "@mui/material";
 import Header from "../../../component/header/Header.jsx";
-import {useForm} from "react-hook-form";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {DemoContainer} from "@mui/x-date-pickers/internals/demo/index.js";
-import {useEffect, useState} from "react";
-import {message, Radio} from "antd";
+import { useForm } from "react-hook-form";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo/index.js";
+import { useEffect, useState } from "react";
+import { message, Radio } from "antd";
 import axios from "axios";
 import Footer from "../../../component/footer/Footer.jsx";
-import {useNavigate} from "react-router-dom";
-import {getValueAPI} from "../../../../api-service.js";
+import { useNavigate } from "react-router-dom";
+import { getValueAPI } from "../../../../api-service.js";
 
 const ScheduleAnAppoinment = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -40,7 +40,7 @@ const ScheduleAnAppoinment = () => {
     const [weight, setWeight] = useState("")
     const [height, setHeight] = useState("")
 
-
+    const today = new Date();
     const datetimeFormat = 'YYYY-MM-DDTHH:mm:00';
 
     const getData = async () => {
@@ -106,14 +106,14 @@ const ScheduleAnAppoinment = () => {
     }
     const {
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         register,
     } = useForm({
         mode: "all",
     });
 
     return (<Box>
-        <Header/>
+        <Header />
         <Box sx={{
             width: "100%",
             height: "100%",
@@ -240,7 +240,7 @@ const ScheduleAnAppoinment = () => {
                                 label="Weight"
                                 id="outlined-start-adornment"
                                 type="number"
-                                sx={{width: '45%'}}
+                                sx={{ width: '45%' }}
                                 value={weight}
                                 onChange={(e) => setWeight(e.target.value)}
                                 InputProps={{
@@ -253,7 +253,7 @@ const ScheduleAnAppoinment = () => {
                                 type="number"
                                 value={height}
                                 onChange={(e) => setHeight(e.target.value)}
-                                sx={{width: '45%'}}
+                                sx={{ width: '45%' }}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">cm</InputAdornment>,
                                 }}
@@ -276,10 +276,10 @@ const ScheduleAnAppoinment = () => {
                                     <Radio value="female">Female</Radio>
                                 </Radio.Group>
                             </Box>
-                            <Box sx={{width: "45%"}}>
+                            <Box sx={{ width: "45%" }}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DemoContainer components={['DateTimePicker']}>
-                                        <DateTimePicker label="Choose your examination time" onChange={onChange}/>
+                                        <DateTimePicker disablePast label="Choose your examination time" onChange={onChange} />
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Box>
@@ -290,7 +290,7 @@ const ScheduleAnAppoinment = () => {
                             display: "flex",
                             justifyContent: "space-between"
                         }}>
-                            <FormControl sx={{width: "45%"}}>
+                            <FormControl sx={{ width: "45%" }}>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -301,10 +301,10 @@ const ScheduleAnAppoinment = () => {
                                     onChange={handleChangeDepartment}
                                 >
                                     {departments.map((value) => <MenuItem key={value.id}
-                                                                          value={value.id}>{value.specName}</MenuItem>)}
+                                        value={value.id}>{value.specName}</MenuItem>)}
                                 </Select>
                             </FormControl>
-                            <FormControl sx={{width: "45%"}}>
+                            <FormControl sx={{ width: "45%" }}>
                                 <InputLabel id="demo-simple-select-label">Specialized doctor</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -316,7 +316,7 @@ const ScheduleAnAppoinment = () => {
                                     onChange={handleChange}
                                 >
                                     {specialization.map((value) => <MenuItem key={value.id}
-                                                                             value={value.id}>{value.fullName}</MenuItem>)}
+                                        value={value.id}>{value.fullName}</MenuItem>)}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -368,7 +368,7 @@ const ScheduleAnAppoinment = () => {
         <Box sx={{
             height: "40px",
         }}></Box>
-        <Footer/>
+        <Footer />
     </Box>)
 }
 export default ScheduleAnAppoinment
