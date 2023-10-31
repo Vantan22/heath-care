@@ -101,7 +101,7 @@ const ManagerUser = () => {
     const handleChangeRole = async () => {
         await HTTP.post('https://truculent-kick-production.up.railway.app/admin/updateUserToDoctor', {
             "userId": currentUser.id,
-            "specld": departmentId,
+            "specId": departmentId,
             workExperience: workExperience,
             graduateAt: graduateAt
         })
