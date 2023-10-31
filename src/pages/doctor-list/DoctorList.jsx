@@ -5,33 +5,6 @@ import {Container, FormControl, InputLabel, MenuItem, Select, Typography} from "
 import Footer from "../../component/Footer/Footer.jsx";
 import {getValueAPI} from "../../../api-service.js";
 
-
-const columns = [
-    {
-        id: 'fullName',
-        label: 'Name',
-        minWidth: 120
-    },
-    {
-        id: 'phoneNumber',
-        label: 'Phone number',
-        minWidth: 80
-    },
-    {
-        id: 'age',
-        label: 'Age',
-        minWidth: 50,
-    },
-    {
-        id: 'gender',
-        label: 'Gender',
-        minWidth: 80,
-    },
-    {
-        id: 'specName',
-        label: 'Spec name',
-        minWidth: 200,
-    }];
 const DoctorList = () => {
     const [pecialization, setSecialization] = useState([])
     const [percializationChoose, setPercializationChoose] = useState("")
