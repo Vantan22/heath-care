@@ -107,22 +107,20 @@ const ManagerUser = () => {
             "specId": departmentId,
             workExperience: workExperience,
             graduateAt: graduateAt
-        }).then((response) => {
-            if (response.status === 200) {
+        }).then(() => {
                 messageApi.open({
                     type: 'success',
-                    content: `${response.data}`,
+                    content: "Update User to doctor successfully!!",
                     duration: 1.5,
                     onClose: () => {
                         setIsUpdate(!isUpdate)
                     }
                 });
-            }
         })
-            .catch((error) => {
+            .catch(() => {
                 messageApi.open({
                     type: 'error',
-                    content: `${error}`,
+                    content: `update User to doctor failed!!`,
                     duration: 1.5,
                     onClose: () => {
                         setIsUpdate(!isUpdate)
@@ -278,8 +276,8 @@ const ManagerUser = () => {
                         }} variant="contained" size="medium" onClick={handleChangeRole} disabled={!isDisibled}
                         >Add new Faculty</Button>
                     </Box>
+                    {contextHolder}
                 </Box>
-                {contextHolder}
             </Box>
         </Container>
     )
