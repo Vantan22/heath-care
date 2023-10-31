@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import React, { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import HTTP from "../../../../axios-config.js";
 import {Button, Container, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Typography} from "@mui/material";
+import {message} from "antd";
 
 
 const columns = [{
@@ -64,6 +65,8 @@ const ManagerUser = () => {
     const [isRole, setIsRole] = useState(false)
     const [workExperience, setWorkExperience] = useState("");
     const [graduateAt, setGraduateAt] = useState("");
+    const [messageApi, contextHolder] = message.useMessage();
+    const [isUpdate, setIsUpdate] = useState(false);
     const getUsers = async () => {
         const data = await HTTP.get('https://truculent-kick-production.up.railway.app/api/user/getAll')
         setUsers(data)
@@ -75,7 +78,7 @@ const ManagerUser = () => {
     useEffect(() => {
         getAllFaculty()
         getUsers()
-    }, []);
+    }, [isUpdate]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -104,7 +107,28 @@ const ManagerUser = () => {
             "specId": departmentId,
             workExperience: workExperience,
             graduateAt: graduateAt
+        }).then((response) => {
+            if (response.status === 200) {
+                messageApi.open({
+                    type: 'success',
+                    content: `${response.data}`,
+                    duration: 1.5,
+                    onClose: () => {
+                        setIsUpdate(!isUpdate)
+                    }
+                });
+            }
         })
+            .catch((error) => {
+                messageApi.open({
+                    type: 'error',
+                    content: `${error}`,
+                    duration: 1.5,
+                    onClose: () => {
+                        setIsUpdate(!isUpdate)
+                    }
+                });
+            })
     }
     return (
         <Container>
@@ -120,9 +144,9 @@ const ManagerUser = () => {
                         width: '100%',
                         overflow: 'hidden'
                     }}>
-                        <TableContainer sx={{ maxHeight: 440 }}>
+                        <TableContainer sx={{maxHeight: 440}}>
                             <Table stickyHeader aria-label="sticky table">
-                                <TableHead sx={{ backgroundColor: "#363432" }}>
+                                <TableHead sx={{backgroundColor: "#363432"}}>
                                     <TableRow>
                                         {columns.map((column, index) => (<TableCell
                                             key={index}
@@ -130,7 +154,7 @@ const ManagerUser = () => {
                                             style={{
                                                 minWidth: column.minWidth,
                                                 backgroundColor: "#363432",
-                                                color:"#fff"
+                                                color: "#fff"
                                             }}
                                         >
                                             {column.label}
@@ -142,7 +166,7 @@ const ManagerUser = () => {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, index) => {
                                             return (<TableRow hover role="checkbox" tabIndex={-1} key={index}
-                                                onClick={() => handleGetId(row.id, row.roleNames, row.fullName)}>
+                                                              onClick={() => handleGetId(row.id, row.roleNames, row.fullName)}>
                                                 {columns.map((column, index) => {
                                                     const value = row[column.id];
                                                     return (<TableCell key={index} align={column.align}>
@@ -165,7 +189,7 @@ const ManagerUser = () => {
                         />
                     </Paper>
                 </Box>
-                <hr />
+                <hr/>
                 <Box sx={{
                     border: "1px solid #c9c9c9",
                     borderRadius: "10px",
@@ -193,8 +217,8 @@ const ManagerUser = () => {
                         <Box sx={{
                             width: "15%",
                         }}>User Name : {currentUser?.fullName}</Box>
-                        <Box sx={{ width: "15%" }}>
-                            <FormControl sx={{ width: "100%" }}>
+                        <Box sx={{width: "15%"}}>
+                            <FormControl sx={{width: "100%"}}>
                                 <InputLabel id="demo-simple-select-label">Faculty list</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -205,14 +229,15 @@ const ManagerUser = () => {
                                     onChange={handleChangeDepartment}
                                 >
                                     {faculties.map((value) => <MenuItem key={value.id}
-                                        value={value.id}>{value.specName}</MenuItem>)}
+                                                                        value={value.id}>{value.specName}</MenuItem>)}
                                 </Select>
                             </FormControl>
                         </Box>
                         <Box sx={{
                             width: "25%",
                             display: "flex",
-                            columnGap:"10px"
+                            columnGap: "10px",
+                            alignItems: "center",
                         }}>
                             <Typography>Work experience</Typography>
                             <OutlinedInput
@@ -228,7 +253,8 @@ const ManagerUser = () => {
                         <Box sx={{
                             width: "25%",
                             display: "flex",
-                            columnGap:"10px"
+                            columnGap: "10px",
+                            alignItems: "center",
                         }}>
                             <Typography>Graduate at</Typography>
                             <OutlinedInput
@@ -253,6 +279,7 @@ const ManagerUser = () => {
                         >Add new Faculty</Button>
                     </Box>
                 </Box>
+                {contextHolder}
             </Box>
         </Container>
     )
