@@ -7,16 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {GridActionsCellItem} from "@mui/x-data-grid";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 import SaveIcon from "@mui/icons-material/Save.js";
 import CancelIcon from "@mui/icons-material/Close.js";
-import {Button} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
     {
         id: 'index',
-        label: 'index',
+        label: 'STT',
         minWidth: 50
     },
     {
@@ -31,7 +31,7 @@ const columns = [
     },
     {
         id: 'registrationDate',
-        label: 'Registration Date)',
+        label: 'Registration Date',
         minWidth: 170,
     },
     {
@@ -58,15 +58,15 @@ export default function StickyHeadTable(props) {
     function handleChangeAppointment(id) {
         props.onClickHideDetail(id);
     }
-const handleUpdateAppointment2 = (id) => {
-    props.onClickUpdateAppointment1(id);
-}
+    const handleUpdateAppointment2 = (id) => {
+        props.onClickUpdateAppointment1(id);
+    }
     return (
         <Paper sx={{
             width: '100%',
             overflow: 'hidden'
         }}>
-            <TableContainer sx={{maxHeight: 440}}>
+            <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -74,7 +74,7 @@ const handleUpdateAppointment2 = (id) => {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{minWidth: column.minWidth}}
+                                    style={{ minWidth: column.minWidth }}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -86,7 +86,7 @@ const handleUpdateAppointment2 = (id) => {
                             .map((row, index) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={index}
-                                              onClick={() => handleChangeAppointment(row.id)}>
+                                        onClick={() => handleChangeAppointment(row.id)}>
                                         {columns?.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -97,9 +97,6 @@ const handleUpdateAppointment2 = (id) => {
                                                 </TableCell>
                                             );
                                         })}
-                                        <TableCell id="action">
-                                            <Button onClick={() => handleUpdateAppointment2(row.id)}>Update</Button>
-                                        </TableCell>
                                     </TableRow>
                                 );
                             })}

@@ -12,57 +12,56 @@ export default function Footer() {
             component="footer"
             sx={{
                 backgroundColor: "#fa965c",
-                marginTop: '30px',
-                height:"fit-height",
+                height: "fit-height",
             }}
         >
             <Container maxWidth="lg">
                 <Grid container spacing={5}>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" sx={{
-                            color :"white",
-                            fontSize :"25px",
-                            textTransform :"uppercase"
+                            color: "white",
+                            fontSize: "25px",
+                            textTransform: "uppercase"
                         }} gutterBottom>
-                           Health Care
+                            Health Care
                         </Typography>
                         <Typography variant="body2" sx={{
-                            color :"#383838",
-                            fontSize :"18px",
+                            color: "#383838",
+                            fontSize: "18px",
                         }}>
                             Bệnh viện được đánh giá là một trong những địa chỉ khám, chữa bệnh uy tín, có chất lượng dịch vụ cao.
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" sx={{
-                            color :"white",
-                            fontSize :"24px",
+                            color: "white",
+                            fontSize: "24px",
                         }} gutterBottom>
                             Contact Us
                         </Typography>
                         <Typography variant="body2" sx={{
-                            color :"#383838",
-                            fontSize :"16px",
+                            color: "#383838",
+                            fontSize: "16px",
                         }}>
                             Cau Giay, Ha Noi, Viet Nam
                         </Typography>
                         <Typography variant="body2" sx={{
-                            color :"#383838",
-                            fontSize :"16px",
+                            color: "#383838",
+                            fontSize: "16px",
                         }}>
                             Email: linhdqth2108046@fpt.edu.vn
                         </Typography>
-                        <Typography variant="body2"sx={{
-                            color :"#383838",
-                            fontSize :"16px",
+                        <Typography variant="body2" sx={{
+                            color: "#383838",
+                            fontSize: "16px",
                         }}>
                             Phone: 099.999.9999
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6" sx={{
-                            color :"white",
-                            fontSize :"24px",
+                            color: "white",
+                            fontSize: "24px",
                         }} gutterBottom>
                             Follow Us
                         </Typography>

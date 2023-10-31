@@ -1,9 +1,9 @@
-import {Box, Container, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import { Box, Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import StickyHeadTable from "../../../component/BaseTable.jsx";
-import {convertAppointmentTime, convertTimeAndDate} from "../../../constant/convert-time.js";
+import { convertAppointmentTime, convertTimeAndDate } from "../../../constant/convert-time.js";
 import HTTP from "../../../../axios-config.js";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const AppointmentList = () => {
@@ -12,7 +12,7 @@ const AppointmentList = () => {
     const [appointmentDetail, setAppointmentDetail] = useState(null)
     const userId = localStorage.getItem('id')
     const navigate = useNavigate()
-    const {id} = useParams()
+    const { id } = useParams()
     const getData = async () => {
         const data = await HTTP.get(`/api/appointment/getByUserId/${userId}`)
         const value = data.map((item, index) => {
@@ -25,7 +25,6 @@ const AppointmentList = () => {
                 appointmentDate: convertTimeAndDate(item.appointment.appointmentTime),
             }
         })
-        console.log('data', data)
         setValues(data)
         setAppointments(value)
     }
@@ -50,19 +49,34 @@ const AppointmentList = () => {
             <Box sx={{
                 marginTop: "20px",
             }}>
-                <Typography>danh sách lịch hẹn</Typography>
+                <Box sx={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
+                    marginBottom: "20px"
+                }}>
+                    <Typography sx={{
+                        color: "#26577C",
+                        fontSize: "30px",
+                        fontWeight: "600",
+                    }}>
+                        Danh sách lịch hẹn
+                    </Typography>
+                </Box>
                 <Box sx={{
                     height: "1px",
                     width: "100%",
                     backgroundColor: "#000",
-                }}/>
-                <StickyHeadTable rows={appointments} onClickHideDetail={onClickHideDetail} onClickUpdateAppointment1={onClickUpdateAppointment1}/>
+                }} />
+                <StickyHeadTable rows={appointments} onClickHideDetail={onClickHideDetail} onClickUpdateAppointment1={onClickUpdateAppointment1} />
                 <Box sx={{
                     height: "1px",
                     width: "100%",
                     backgroundColor: "#000",
                     margin: "40px 0"
-                }}/>
+                }} />
             </Box>
             {appointmentDetail && (<Box>
                 <Typography>Chi tiết lịch hẹn</Typography>

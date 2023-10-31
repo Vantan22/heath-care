@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from "react";
 import HTTP from "../../../../axios-config.js";
-import { Button, Container, TextField } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 
 const FacultyManagement = () => {
   const [facultys, setFacultys] = useState([])
@@ -40,84 +40,99 @@ const FacultyManagement = () => {
 
   return (
     <Container>
-    <Box sx={{
-      display: "flex",
-      flexDirection: "column",
-      rowGap: "10px",
-      width: "calc(100vw - 200px)",
-      margin: "0 auto"
-    }}>
-      <Paper sx={{
-        width: '100%',
-        overflow: 'hidden'
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "10px",
+        width: "calc(100vw - 300px)",
+        margin: "0 auto"
       }}>
-        <TableContainer component={Paper} sx={{ height: 440 }}>
-          <Table sx={{
-            minWidth: 200,
-            color: "black"
-          }} stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{
-                  color: "white",
-                  background: "#383838",
-                  fontSize: "18px"
-                }}>Faculty name</TableCell>
-                <TableCell sx={{
-                  color: "white",
-                  background: "#383838",
-                  fontSize: "18px"
-                }} align="right">ID</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {facultys.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.specName}
-                  </TableCell>
-                  <TableCell align="right">{row.id}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-      <hr />
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "space-between",
-          columnGap: "100px"
-        }}
-      >
         <Box sx={{
-          width: "100%"
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}>
-          {isAddFaculty && (<TextField sx={{
-            height: "50px"
-          }} id="outlined-basic" label="Faculty name" variant="outlined" fullWidth
-            onChange={handleChangeValue} />)}
+          <Typography sx={{
+            color: "#26577C",
+            fontSize: "30px",
+            fontWeight: "600",
+          }}>
+            Faculty management
+          </Typography>
         </Box>
-        {isAddFaculty ? (<Button sx={{
-          minWidth: "200px",
-          height: "50px",
-          alignItems: "left"
-        }} variant="contained" size="medium" onClick={handleSubmit}>Confirm</Button>) : (
-          <Button sx={{
+        <Paper sx={{
+          width: '100%',
+          overflow: 'hidden'
+        }}>
+          <TableContainer component={Paper} sx={{ height: 440 }}>
+            <Table sx={{
+              minWidth: 100,
+              color: "black"
+            }} stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{
+                    color: "white",
+                    background: "#383838",
+                    fontSize: "18px"
+                  }}>Faculty name</TableCell>
+                  <TableCell sx={{
+                    color: "white",
+                    background: "#383838",
+                    fontSize: "18px"
+                  }} align="right">ID</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {facultys.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.specName}
+                    </TableCell>
+                    <TableCell align="right">{row.id}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+        <hr />
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "space-between",
+            columnGap: "100px"
+          }}
+        >
+          <Box sx={{
+            width: "100%"
+          }}>
+            {isAddFaculty && (<TextField sx={{
+              height: "50px"
+            }} id="outlined-basic" label="Faculty name" variant="outlined" fullWidth
+              onChange={handleChangeValue} />)}
+          </Box>
+          {isAddFaculty ? (<Button sx={{
             minWidth: "200px",
             height: "50px",
-            alignItems: "left",
-            backgroundColor: "#363432",
-          }} variant="contained" size="medium"
-            onClick={toggleButton}>Add new Faculty</Button>)}
+            alignItems: "left"
+          }} variant="contained" size="medium" onClick={handleSubmit}>Confirm</Button>) : (
+            <Button sx={{
+              minWidth: "200px",
+              height: "50px",
+              alignItems: "left",
+              backgroundColor: "#363432",
+            }} variant="contained" size="medium"
+              onClick={toggleButton}>Add new Faculty</Button>)}
 
+        </Box>
       </Box>
-    </Box>
     </Container>
   )
 }

@@ -32,21 +32,24 @@ const Doctor = () => {
     }, []);
     return (
         <Box sx={{
-            width: "140px",
+            width: "200px",
             backgroundColor: "#363432",
             minHeight: "100vh",
-            maxWidth: "150px",
+            maxWidth: "200px",
         }}>
             <Box sx={{
                 height: '80px',
+                width: "calc(100% - 200px)",
+
             }}>
                 <header style={{
-                    width: "calc(100% - 140px)",
+                    width: "calc(100% - 200px)",
                     backgroundColor: "#666666",
                     position: "fixed",
-                    marginLeft: "140px",
+                    marginLeft: "200px",
                     zIndex: "10"
                 }}>
+                    <Container>
                         <Box sx={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -75,17 +78,9 @@ const Doctor = () => {
                                             </Stack>
                                         </Typography>
                                         <Menu {...bindMenu(popupState)} >
-                                            <MenuItem sx={{
-                                                width: "150px",
-                                            }} onClick={() =>
-                                                navigate('/profile')
-                                            }>Profile</MenuItem>
-                                            {isAdmin && <MenuItem
-                                                onClick={() => navigate('/admin/faculty-management')}>Admin</MenuItem>}
-                                            {isDoctor && <MenuItem
-                                                onClick={() => navigate('/doctor/create-medical-records')}>Doctor</MenuItem>}
-                                            <MenuItem onClick={() => navigate('/appointment-list')}>Lịch Hẹn</MenuItem>
-                                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                            <MenuItem onClick={handleLogout} sx={{
+                                                width: "200px",
+                                            }}>Logout</MenuItem>
                                         </Menu>
                                     </>)}
                                 </PopupState>
@@ -96,28 +91,29 @@ const Doctor = () => {
                                 cursor: "pointer",
                             }}>Login</Link>}
                         </Box>
+                    </Container>
                 </header>
             </Box>
-            <Container>
+            <Box sx={{
+                display: "flex",
+                width: "100vw",
+            }}>
                 <Box sx={{
-                    display: "flex",
+                    top: "0",
+                    width: "200px",
+                    backgroundColor: "#363432",
+                    maxWidth: "200px",
+                    minHeight: "100vh",
+                    position: "fixed",
                 }}>
-                    <Box sx={{
-                        width: "120px",
-                        backgroundColor: "#363432",
-                        minHeight: "100vh",
-                        maxWidth: "140px",
-                        position:"fixed",
-                    }}>
-                        <NavTabsForDoctor />
-                    </Box>
-
-                    <Box sx={{
-                        marginTop: "20px",
-                        marginLeft:"120px"
-                    }}><Outlet /></Box>
+                    <NavTabsForDoctor />
                 </Box>
-            </Container>
+                <Box sx={{
+                    marginTop: "20px",
+                    marginLeft: "200px",
+                }}>
+                    <Outlet /></Box>
+            </Box>
         </Box>
     )
 }

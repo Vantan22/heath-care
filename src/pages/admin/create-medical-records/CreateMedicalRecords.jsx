@@ -11,8 +11,8 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
@@ -26,7 +26,7 @@ import {
     GridToolbarContainer,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
-import {message} from "antd";
+import { message } from "antd";
 import HTTP from "../../../../axios-config.js";
 
 const CreateMedicalRecords = () => {
@@ -124,7 +124,7 @@ const CreateMedicalRecords = () => {
     const {
         handleSubmit,
         register,
-    } = useForm({mode: "all"});
+    } = useForm({ mode: "all" });
 
 
     function EditToolbar(props) {
@@ -153,7 +153,7 @@ const CreateMedicalRecords = () => {
         };
 
         return (<GridToolbarContainer>
-            <Button color="primary" startIcon={<AddIcon/>} onClick={handleClick}>
+            <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
                 Add record
             </Button>
         </GridToolbarContainer>);
@@ -193,14 +193,14 @@ const CreateMedicalRecords = () => {
     const handleEditClick = (id) => () => {
         setRowModesModel({
             ...rowModesModel,
-            [id]: {mode: GridRowModes.Edit}
+            [id]: { mode: GridRowModes.Edit }
         });
     };
 
     const handleSaveClick = (id) => () => {
         setRowModesModel({
             ...rowModesModel,
-            [id]: {mode: GridRowModes.View}
+            [id]: { mode: GridRowModes.View }
         });
     };
 
@@ -260,19 +260,19 @@ const CreateMedicalRecords = () => {
         headerName: 'Actions',
         width: 100,
         cellClassName: 'actions',
-        getActions: ({id}) => {
+        getActions: ({ id }) => {
             const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
             if (isInEditMode) {
                 return [<GridActionsCellItem
-                    icon={<SaveIcon/>}
+                    icon={<SaveIcon />}
                     label="Save"
                     sx={{
                         color: 'primary.main',
                     }}
                     onClick={handleSaveClick(id)}
                 />, <GridActionsCellItem
-                    icon={<CancelIcon/>}
+                    icon={<CancelIcon />}
                     label="Cancel"
                     className="textPrimary"
                     onClick={handleCancelClick(id)}
@@ -281,13 +281,13 @@ const CreateMedicalRecords = () => {
             }
 
             return [<GridActionsCellItem
-                icon={<EditIcon/>}
+                icon={<EditIcon />}
                 label="Edit"
                 className="textPrimary"
                 onClick={handleEditClick(id)}
                 color="inherit"
             />, <GridActionsCellItem
-                icon={<DeleteIcon/>}
+                icon={<DeleteIcon />}
                 label="Delete"
                 onClick={handleDeleteClick(id)}
                 color="inherit"
@@ -329,7 +329,7 @@ const CreateMedicalRecords = () => {
                     borderRadius: "10px",
                     boxShadow: "rgba(0, 0, 0, 0.05) 0px 5px 5px",
                     border: "1px solid #B4B4B3",
-                    width: "calc(100vw - 200px)",
+                    width: "calc(100vw - 300px)",
                     position: "relative",
                 }}>
                     <Typography sx={{
@@ -477,7 +477,7 @@ const CreateMedicalRecords = () => {
                             }}>
                                 <Typography>Seclect Files</Typography>
                                 <input type="file" onChange={handleChangeAvatar} accept="image/jpeg,image/png"
-                                       multiple/>
+                                    multiple />
                             </Box>
                         </Box>
                         <Typography sx={{
@@ -499,8 +499,8 @@ const CreateMedicalRecords = () => {
                         }}>
                             <Typography> Xét nghiệm hoá sinh :</Typography>
                             <OutlinedInput name="biochemicalTests"
-                                           value={biochemicalTests} {...register("biochemicalTests")} multiline
-                                           rows={4} onChange={(e) => setBiochemicalTests(e.target.value)}/>
+                                value={biochemicalTests} {...register("biochemicalTests")} multiline
+                                rows={4} onChange={(e) => setBiochemicalTests(e.target.value)} />
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -511,8 +511,8 @@ const CreateMedicalRecords = () => {
                         }}>
                             <Typography> Chuẩn đoán hình ảnh :</Typography>
                             <OutlinedInput name="imageAnalysation"
-                                           value={imageAnalysation} {...register("imageAnalysation")} multiline
-                                           rows={4} onChange={(e) => setImageAnalysation(e.target.value)}/>
+                                value={imageAnalysation} {...register("imageAnalysation")} multiline
+                                rows={4} onChange={(e) => setImageAnalysation(e.target.value)} />
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -523,8 +523,8 @@ const CreateMedicalRecords = () => {
                         }}>
                             <Typography> Tình trạng hiện tại :</Typography>
                             <OutlinedInput name="currentCondition"
-                                           value={currentCondition} {...register("currentCondition")} multiline
-                                           rows={4} onChange={(e) => setCurrentCondition(e.target.value)}/>
+                                value={currentCondition} {...register("currentCondition")} multiline
+                                rows={4} onChange={(e) => setCurrentCondition(e.target.value)} />
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -535,8 +535,8 @@ const CreateMedicalRecords = () => {
                         }}>
                             <Typography> Tiến triển của bệnh :</Typography>
                             <OutlinedInput name="diseaseProgression"
-                                           value={diseaseProgression} {...register("diseaseProgression")} multiline
-                                           rows={4} onChange={(e) => setDiseaseProgression(e.target.value)}/>
+                                value={diseaseProgression} {...register("diseaseProgression")} multiline
+                                rows={4} onChange={(e) => setDiseaseProgression(e.target.value)} />
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -547,8 +547,8 @@ const CreateMedicalRecords = () => {
                         }}>
                             <Typography> Ghi chú từ bác sĩ :</Typography>
                             <OutlinedInput name="notesFromDoctor"
-                                           value={notesFromDoctor} {...register("notesFromDoctor")} multiline
-                                           rows={4} onChange={(e) => setNotesFromDoctor(e.target.value)}/>
+                                value={notesFromDoctor} {...register("notesFromDoctor")} multiline
+                                rows={4} onChange={(e) => setNotesFromDoctor(e.target.value)} />
                         </Box>
                         <Box>
                             <Box

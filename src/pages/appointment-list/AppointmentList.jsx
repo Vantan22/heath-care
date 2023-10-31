@@ -1,11 +1,11 @@
-import {Box, Container, Typography} from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import Footer from "../../component/Footer/Footer.jsx";
 import Header from "../../component/header/Header.jsx";
 import HTTP from "../../../axios-config.js";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import StickyHeadTable from "../../component/BaseTable.jsx";
-import {convertAppointmentTime, convertTimeAndDate} from "../../constant/convert-time.js";
-import {useNavigate, useParams} from "react-router-dom";
+import { convertAppointmentTime, convertTimeAndDate } from "../../constant/convert-time.js";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const AppointmentList = () => {
@@ -15,10 +15,9 @@ const AppointmentList = () => {
     const [dataAppointment, setDataAppointment] = useState({})
     const userId = localStorage.getItem('id')
     const navigate = useNavigate()
-    const {id} = useParams()
+    const { id } = useParams()
     const getData = async () => {
         const data = await HTTP.get(`/api/appointment/getByUserId/${userId}`)
-        // const dataAppointment = await HTTP.get(`/api/appointment/getByUserId/${id}`)
         console.log(dataAppointment, "dataAppointment")
         const value = data.map((item, index) => {
             return {
@@ -49,7 +48,7 @@ const AppointmentList = () => {
         flexDirection: "column",
         height: "100vh",
     }}>
-        <Header/>
+        <Header />
         <Box sx={{
             flex: "1 1 0"
         }}>
@@ -57,20 +56,43 @@ const AppointmentList = () => {
                 <Box sx={{
                     marginTop: "20px",
                 }}>
-                    <Typography>danh sách lịch hẹn</Typography>
+                    <Box sx={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: "40px",
+                        marginBottom: "20px"
+                    }}>
+                        <Typography sx={{
+                            color: "#26577C",
+                            fontSize: "40px",
+                            fontWeight: "600",
+                        }}>
+                            LỊCH HẸN
+                        </Typography>
+                        <Typography sx={{
+                            color: "#26577C",
+                            fontSize: "25px",
+                            fontWeight: "400",
+                        }}>
+                            APPOINTMENT SCHEDULE
+                        </Typography>
+                    </Box>
                     <Box sx={{
                         height: "1px",
                         width: "100%",
                         backgroundColor: "#000",
-                    }}/>
+                    }} />
                     <StickyHeadTable rows={appointments} onClickHideDetail={onClickHideDetail}
-                                     onClickUpdateAppointment1={onClickUpdateAppointment1}/>
+                        onClickUpdateAppointment1={onClickUpdateAppointment1} />
                     <Box sx={{
                         height: "1px",
                         width: "100%",
                         backgroundColor: "#000",
                         margin: "40px 0"
-                    }}/>
+                    }} />
                 </Box>
                 {appointmentDetail && (<Box>
                     <Typography>Chi tiết lịch hẹn</Typography>
@@ -245,7 +267,7 @@ const AppointmentList = () => {
 
             </Container>
         </Box>
-        <Footer/>
+        <Footer />
     </Box>)
 }
 export default AppointmentList
