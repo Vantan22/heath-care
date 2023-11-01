@@ -1,5 +1,5 @@
 import { Avatar, Box, Container, Menu, MenuItem, Stack } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import NavTabsForDoctor from "./component/NavigationMenuFormDoctor.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,7 +12,7 @@ const Doctor = () => {
     const patientId = localStorage.getItem("id");
     const [isAdmin, setIsAdmin] = useState(false);
     const [isDoctor, setIsDoctor] = useState(false);
-
+const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem('username')
         localStorage.removeItem('id')

@@ -1,6 +1,6 @@
 import { Avatar, Box, Container, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import NavTabs from "./Navigation/NavigationMenu.jsx";
-import { Outlet } from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import Header from "../../component/header/Header.jsx";
 import { useEffect, useState } from "react";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
@@ -12,6 +12,7 @@ const Admin = () => {
     const patientId = localStorage.getItem("id");
     const [isAdmin, setIsAdmin] = useState(false);
     const [isDoctor, setIsDoctor] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('username')
